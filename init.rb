@@ -1,1 +1,0 @@
-QuickNav.init_rails
