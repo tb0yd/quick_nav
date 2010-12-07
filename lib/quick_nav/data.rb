@@ -36,8 +36,7 @@ module QuickNav
 
     # called from the setup metod
     def self.reselect(item=get_selected[0])
-      raise "must reselect an item" if item.nil?
-      select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
+      select_r(item)
     end
 
     def self.is_selected?(item)
@@ -56,9 +55,12 @@ module QuickNav
 
       unless is_selected?(item) or item.nil?
         @@selected.unshift item
-        reselect(item) unless option == :before_setup
+        select_r(item) unless option == :before_setup
       end
     end
-
+    
+    def self.select_r(item)
+      select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
+    end
   end
 end
