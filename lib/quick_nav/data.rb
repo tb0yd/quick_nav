@@ -24,6 +24,10 @@ module QuickNav
       end
     end
 
+    def self.update(*args)
+      @@base.collect! { |item| item[0] == args[0] ? args : item }
+    end
+
     def self.get_row(parent=nil)
       @@base.select { |item| @@parents[item[0]] == parent }
     end

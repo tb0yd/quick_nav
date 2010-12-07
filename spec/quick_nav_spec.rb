@@ -314,19 +314,15 @@ HTML_END
 
   describe "#transformation" do
     it "should have an 'unshift' method for adding items to the beginning of the nav" do
-      signed_in = false
-
       run do
         transformation do
-          if signed_in == true
-            push :connections, "/connections"
-            push :inbox, "/messages"
-            push :portfolio, "/new_portfolio_setup"
-            unshift :dashboard, "/dashboard"
-            rm :js_advice
-            rm :em_advice
-            rm :ed_advice
-          end
+          push :connections, "/connections"
+          push :inbox, "/messages"
+          push :portfolio, "/new_portfolio_setup"
+          unshift :dashboard, "/dashboard"
+          rm :js_advice
+          rm :em_advice
+          rm :ed_advice
         end
 
         QuickNav::Data.select_before_setup :search_careers
@@ -344,13 +340,35 @@ HTML_END
         end
       end
 
-      signed_in = true
       QuickNav::Transformations.go!
       QuickNav::Data.get_row.collect { |i| i[0] }.should == [:dashboard, :careers, :communities, :search, :connections, :inbox, :portfolio]
       QuickNav::Data.get_row(:careers).collect { |i| i[0] }.should == [:search_careers, :search_industries]
       QuickNav::Data.get_selected.include?(:careers).should be_true
       QuickNav::Data.get_selected.include?(:search_careers).should be_true
       QuickNav::Data.get_selected.include?(:search_industries).should_not be_true
+    end
+
+    it "should have an 'update' method for changing nav items' content" do
+      run do
+        transformation do
+          update :js_advice, "/js_resources", :display => "Advice"          
+        end
+
+        QuickNav::Data.select_before_setup :search_careers
+
+        setup do
+          item :careers, "/search_occupations" do
+            item :search_careers, "/search_occupations", :display => "Careers"
+            item :search_industries, "/industries", :display =>  "Industries"
+          end
+          item :communities, "/communities"
+          item :js_advice, "/js_resources", :display => "Career Advice"
+          item :search, "/search_job_posts", :display => "Advanced Search"
+        end
+      end
+
+      QuickNav::Transformations.go!
+      QuickNav::Data.get_row[2][2][:display].should == "Advice"
     end
   end
 end

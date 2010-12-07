@@ -43,6 +43,7 @@ module QuickNav
       def push(*args); Data.push(*args) end
       def unshift(*args); Data.unshift(*args) end
       def rm(name); Data.rm(name) end
+      def update(*args); Data.update(*args) end
 
       Transformations.add(block)
     end
