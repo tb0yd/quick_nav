@@ -1,6 +1,4 @@
-require File.join(File.dirname(__FILE__), '../../../../spec/spec_helper')
-
-include QuickNav
+require 'quick_nav'
 
 describe QuickNav do
   before(:each) do
