@@ -1,8 +1,9 @@
 require 'quick_nav'
 
 describe QuickNav do
+  
   before(:each) do
-    @sugar = Sugar.new(self)
+    @sugar = QuickNav::Sugar.new(self)
   end
 
   def run(&block)
@@ -339,7 +340,7 @@ HTML_END
       end
 
       signed_in = true
-      Transformations.go!
+      QuickNav::Transformations.go!
       QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
     end
   end
