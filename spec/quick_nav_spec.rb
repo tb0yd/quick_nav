@@ -351,7 +351,7 @@ HTML_END
     it "should have an 'update' method for changing nav items' content" do
       run do
         transformation do
-          update :js_advice, "/js_resources", :display => "Advice"          
+          update :js_advice, "/js_resources", :display => "Advice"
         end
 
         QuickNav::Data.select_before_setup :search_careers
