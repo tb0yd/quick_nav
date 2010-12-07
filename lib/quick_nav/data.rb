@@ -45,7 +45,9 @@ module QuickNav
       @@selected
     end
 
-    protected
+    def self.is_selected?(item)
+      defined?(@@selected) and @@selected.include?(item)
+    end
 
     # there's no use case in server-side code for manually selecting a node after setup.
     def self.select(item, option=nil)
@@ -60,9 +62,7 @@ module QuickNav
     def self.select_r(item)
       select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
     end
-
-    def self.is_selected?(item)
-      defined?(@@selected) and @@selected.include?(item)
-    end
+    
+    private_class_method :is_selected?, :select, :select_r
   end
 end

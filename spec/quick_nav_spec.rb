@@ -232,8 +232,8 @@ HTML_END
 
       QuickNav::Data.get_row.collect { |i| i[0] }.should == [:item_1, :item_4, :item_3]
       QuickNav::Data.get_row(:item_1).collect { |i| i[0] }.should == [:settings, :sign_out]
-      QuickNav::Data.is_selected?(:item_1).should be_true
-      QuickNav::Data.is_selected?(:settings).should_not be_true
+      QuickNav::Data.get_selected.include?(:item_1).should be_true
+      QuickNav::Data.get_selected.include?(:settings).should_not be_true
 
       QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
     end
@@ -306,9 +306,9 @@ HTML_END
       QuickNav::Transformations.go!
       QuickNav::Data.get_row.collect { |i| i[0] }.should == [:careers, :communities, :search, :connections, :inbox, :portfolio, :dashboard]
       QuickNav::Data.get_row(:careers).collect { |i| i[0] }.should == [:search_careers, :search_industries]
-      QuickNav::Data.is_selected?(:careers).should be_true
-      QuickNav::Data.is_selected?(:search_careers).should be_true
-      QuickNav::Data.is_selected?(:search_industries).should_not be_true
+      QuickNav::Data.get_selected.include?(:careers).should be_true
+      QuickNav::Data.get_selected.include?(:search_careers).should be_true
+      QuickNav::Data.get_selected.include?(:search_industries).should_not be_true
     end
   end
 
@@ -348,9 +348,9 @@ HTML_END
       QuickNav::Transformations.go!
       QuickNav::Data.get_row.collect { |i| i[0] }.should == [:dashboard, :careers, :communities, :search, :connections, :inbox, :portfolio]
       QuickNav::Data.get_row(:careers).collect { |i| i[0] }.should == [:search_careers, :search_industries]
-      QuickNav::Data.is_selected?(:careers).should be_true
-      QuickNav::Data.is_selected?(:search_careers).should be_true
-      QuickNav::Data.is_selected?(:search_industries).should_not be_true
+      QuickNav::Data.get_selected.include?(:careers).should be_true
+      QuickNav::Data.get_selected.include?(:search_careers).should be_true
+      QuickNav::Data.get_selected.include?(:search_industries).should_not be_true
     end
   end
 end

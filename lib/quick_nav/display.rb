@@ -40,7 +40,7 @@ module QuickNav
       opts ||= {}
       name = opts[:display] || sym_name.to_s.humanize
 
-      if Data.is_selected?(sym_name)
+      if Data.get_selected.include?(sym_name)
         %(<li id="menu_nav_#{sym_name}" class="selected"><a class="selected" href="#{url}">#{name}</a></li>)
       else
         %(<li id="menu_nav_#{sym_name}"><a href="#{url}">#{name}</a></li>)
