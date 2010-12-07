@@ -10,6 +10,9 @@ module QuickNav
         block.call
       end
 
+      # a good place to make sure the right item is selected.
+      Data.reselect
+
       # a good place to reset (FIXME)
       @@transformations = []
     end

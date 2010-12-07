@@ -3,8 +3,8 @@ require 'active_support/inflector'
 module QuickNav
   module Display
     def self.nav
-      item = Data.get_selected[0]
-      Data.reselect(item) # this makes sure the selected item's parents are also rendered as selected
+      # a good place to make sure the right item is selected.
+      Data.reselect
 
       # do the primary nav
       result = line(

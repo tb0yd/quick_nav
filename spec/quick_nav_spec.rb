@@ -10,7 +10,7 @@ describe QuickNav do
     @sugar.instance_eval &block
   end
 
-  describe "#render_navigation_stuf" do
+  describe "#nav" do
     it "should generate nav html based on a hash it already knows" do
       nav_html = <<-HTML_END
 <div class="menu_wrapper_bg">
@@ -267,48 +267,6 @@ HTML_END
 
   describe "#transformation" do
     it "should let you define a transformation applied to the menu if a condition is met" do
-      nav_html = <<-HTML_END
-<div class="menu_wrapper_bg">
-  <div class="menu_wrapper">
-    <ul class="column span-48 menu main_menu">
-      <li id="menu_nav_careers" class="selected">
-        <a class="selected" href="/search_occupations">Careers</a>
-      </li>
-      <li id="menu_nav_communities">
-        <a href="/communities">Communities</a>
-      </li>
-      <li id="menu_nav_search">
-        <a href="/search_job_posts">Advanced Search</a>
-      </li>
-      <li id="menu_nav_connections">
-        <a href="/connections">Connections</a>
-      </li>
-      <li id="menu_nav_inbox">
-        <a href="/messages">Inbox</a>
-      </li>
-      <li id="menu_nav_portfolio">
-        <a href="/new_portfolio_setup">Portfolio</a>
-      </li>
-      <li id="menu_nav_dashboard">
-        <a href="/dashboard">Dashboard</a>
-      </li>
-    </ul>
-  </div>
-</div>
-<div class="sub_menu_wrapper_bg">
-  <div class="sub_menu_wrapper">
-    <ul class="menu sub_menu">
-      <li id="menu_nav_search_careers" class="selected">
-        <a class="selected" href="/search_occupations">Careers</a>
-      </li>
-      <li id="menu_nav_search_industries">
-        <a href="/industries">Industries</a>
-      </li>
-    </ul>
-  </div>
-</div>
-HTML_END
-
       signed_in = false
 
       run do
@@ -341,54 +299,16 @@ HTML_END
 
       signed_in = true
       QuickNav::Transformations.go!
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Data.get_row.collect { |i| i[0] }.should == [:careers, :communities, :search, :connections, :inbox, :portfolio, :dashboard]
+      QuickNav::Data.get_row(:careers).collect { |i| i[0] }.should == [:search_careers, :search_industries]
+      QuickNav::Data.is_selected?(:careers).should be_true
+      QuickNav::Data.is_selected?(:search_careers).should be_true
+      QuickNav::Data.is_selected?(:search_industries).should_not be_true
     end
   end
 
   describe "#transformation" do
     it "should have an 'unshift' method for adding items to the beginning of the nav" do
-      nav_html = <<-HTML_END
-<div class="menu_wrapper_bg">
-  <div class="menu_wrapper">
-    <ul class="column span-48 menu main_menu">
-      <li id="menu_nav_dashboard">
-        <a href="/dashboard">Dashboard</a>
-      </li>
-      <li id="menu_nav_careers" class="selected">
-        <a class="selected" href="/search_occupations">Careers</a>
-      </li>
-      <li id="menu_nav_communities">
-        <a href="/communities">Communities</a>
-      </li>
-      <li id="menu_nav_search">
-        <a href="/search_job_posts">Advanced Search</a>
-      </li>
-      <li id="menu_nav_connections">
-        <a href="/connections">Connections</a>
-      </li>
-      <li id="menu_nav_inbox">
-        <a href="/messages">Inbox</a>
-      </li>
-      <li id="menu_nav_portfolio">
-        <a href="/new_portfolio_setup">Portfolio</a>
-      </li>
-    </ul>
-  </div>
-</div>
-<div class="sub_menu_wrapper_bg">
-  <div class="sub_menu_wrapper">
-    <ul class="menu sub_menu">
-      <li id="menu_nav_search_careers" class="selected">
-        <a class="selected" href="/search_occupations">Careers</a>
-      </li>
-      <li id="menu_nav_search_industries">
-        <a href="/industries">Industries</a>
-      </li>
-    </ul>
-  </div>
-</div>
-HTML_END
-
       signed_in = false
 
       run do
@@ -421,7 +341,11 @@ HTML_END
 
       signed_in = true
       QuickNav::Transformations.go!
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Data.get_row.collect { |i| i[0] }.should == [:dashboard, :careers, :communities, :search, :connections, :inbox, :portfolio]
+      QuickNav::Data.get_row(:careers).collect { |i| i[0] }.should == [:search_careers, :search_industries]
+      QuickNav::Data.is_selected?(:careers).should be_true
+      QuickNav::Data.is_selected?(:search_careers).should be_true
+      QuickNav::Data.is_selected?(:search_industries).should_not be_true
     end
   end
 end
