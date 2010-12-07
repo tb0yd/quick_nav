@@ -32,12 +32,13 @@ module QuickNav
     def self.select_before_setup(item)
       raise "cannot select >1 item" if item.respond_to?(:include?)
       @@selected = []
-      select(item, :before_setup) unless is_selected?(item)
+      select(item, :before_setup)
     end
 
     # called from the setup metod
     def self.reselect(item=get_selected[0])
-      select_r(item)
+
+      select(item)
     end
 
     def self.is_selected?(item)
@@ -53,7 +54,7 @@ module QuickNav
     # there's no use case in server-side code for manually selecting a node after setup.
     def self.select(item, option=nil)
       unless item.nil?
-        @@selected.unshift item
+        @@selected.unshift item unless is_selected?(item)
         unless option == :before_setup
           select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
         end

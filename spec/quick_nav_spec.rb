@@ -230,6 +230,11 @@ HTML_END
         end
       end
 
+      QuickNav::Data.get_row.collect { |i| i[0] }.should == [:item_1, :item_4, :item_3]
+      QuickNav::Data.get_row(:item_1).collect { |i| i[0] }.should == [:settings, :sign_out]
+      QuickNav::Data.is_selected?(:item_1).should be_true
+      QuickNav::Data.is_selected?(:settings).should_not be_true
+
       QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
     end
   end
