@@ -41,6 +41,7 @@ module QuickNav
     def transformation(&block)
       # DSL must be set up before the block is passed on again
       def push(*args); Data.push(*args) end
+      def unshift(*args); Data.unshift(*args) end
       def rm(name); Data.rm(name) end
 
       Transformations.add(block)

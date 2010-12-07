@@ -11,6 +11,11 @@ module QuickNav
       @@parents.store(k, parent)
     end
 
+    def self.unshift(k, v, h={}, parent=nil)
+      @@base.unshift([k, v, h])
+      @@parents.store(k, parent)
+    end
+
     def self.rm(k)
       @@base.delete_if { |item| item[0] == k }
       @@parents.delete(k)

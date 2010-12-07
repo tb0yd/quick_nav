@@ -344,4 +344,84 @@ HTML_END
       QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
     end
   end
+
+  describe "#transformation" do
+    it "should have an 'unshift' method for adding items to the beginning of the nav" do
+      nav_html = <<-HTML_END
+<div class="menu_wrapper_bg">
+  <div class="menu_wrapper">
+    <ul class="column span-48 menu main_menu">
+      <li id="menu_nav_dashboard">
+        <a href="/dashboard">Dashboard</a>
+      </li>
+      <li id="menu_nav_careers" class="selected">
+        <a class="selected" href="/search_occupations">Careers</a>
+      </li>
+      <li id="menu_nav_communities">
+        <a href="/communities">Communities</a>
+      </li>
+      <li id="menu_nav_search">
+        <a href="/search_job_posts">Advanced Search</a>
+      </li>
+      <li id="menu_nav_connections">
+        <a href="/connections">Connections</a>
+      </li>
+      <li id="menu_nav_inbox">
+        <a href="/messages">Inbox</a>
+      </li>
+      <li id="menu_nav_portfolio">
+        <a href="/new_portfolio_setup">Portfolio</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="sub_menu_wrapper_bg">
+  <div class="sub_menu_wrapper">
+    <ul class="menu sub_menu">
+      <li id="menu_nav_search_careers" class="selected">
+        <a class="selected" href="/search_occupations">Careers</a>
+      </li>
+      <li id="menu_nav_search_industries">
+        <a href="/industries">Industries</a>
+      </li>
+    </ul>
+  </div>
+</div>
+HTML_END
+
+      signed_in = false
+
+      run do
+        transformation do
+          if signed_in == true
+            push :connections, "/connections"
+            push :inbox, "/messages"
+            push :portfolio, "/new_portfolio_setup"
+            unshift :dashboard, "/dashboard"
+            rm :js_advice
+            rm :em_advice
+            rm :ed_advice
+          end
+        end
+
+        QuickNav::Data.select_before_setup :search_careers
+
+        setup do
+          item :careers, "/search_occupations" do
+            item :search_careers, "/search_occupations", :display => "Careers"
+            item :search_industries, "/industries", :display =>  "Industries"
+          end
+          item :communities, "/communities"
+          item :js_advice, "/js_resources", :display => "Career Advice"
+          item :em_advice, "/em_resources", :display => "Employer Advice"
+          item :ed_advice, "/ed_resources", :display => "Educator Advice"
+          item :search, "/search_job_posts", :display => "Advanced Search"
+        end
+      end
+
+      signed_in = true
+      QuickNav::Transformations.go!
+      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+    end
+  end
 end
