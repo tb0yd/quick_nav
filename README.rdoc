@@ -1,16 +1,12 @@
 = quick_nav
 
-Description goes here.
+This project is designed to provide a fast HTML nav generator for Rails. The strategy I am using in the project is to avoid looping and creating objects.
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+The project has not reached a release quality state yet. If you want to include it or fork it, look in the specs for guidance on how to write navigation.rb.
+
+== Acknowledgement
+
+All thanks and praise are due to Allah.
 
 == Copyright
 
