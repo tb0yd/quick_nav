@@ -41,10 +41,6 @@ module QuickNav
       select(item)
     end
 
-    def self.is_selected?(item)
-      defined?(@@selected) and @@selected.include?(item)
-    end
-
     def self.get_selected
       @@selected
     end
@@ -63,6 +59,10 @@ module QuickNav
     
     def self.select_r(item)
       select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
+    end
+
+    def self.is_selected?(item)
+      defined?(@@selected) and @@selected.include?(item)
     end
   end
 end
