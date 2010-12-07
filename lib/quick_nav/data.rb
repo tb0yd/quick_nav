@@ -35,13 +35,8 @@ module QuickNav
       select(item, :before_setup)
     end
 
-    # called from the setup metod
-    def self.reselect(item=get_selected[0])
-
-      select(item)
-    end
-
     def self.get_selected
+      select(@@selected[0])
       @@selected
     end
 

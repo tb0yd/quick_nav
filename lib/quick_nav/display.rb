@@ -3,9 +3,6 @@ require 'active_support/inflector'
 module QuickNav
   module Display
     def self.nav
-      # a good place to make sure the right item is selected.
-      Data.reselect
-
       # do the primary nav
       result = line(
         '<div class="menu_wrapper_bg"><div class="menu_wrapper"><ul class="column span-48 menu main_menu">',
