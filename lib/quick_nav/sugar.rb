@@ -18,7 +18,7 @@ module QuickNav
       # redirect the control flow
       old_addition = @@addition if defined?(@@addition)
       old_recursion = @@recursion if defined?(@@recursion)
-      @@addition = lambda { |k, v, h| Data.add(k, v, h, parent) }
+      @@addition = lambda { |k, v, h| Data.push(k, v, h, parent) }
       @@recursion = lambda { |next_parent, sub_block| setup(next_parent, &sub_block) }
 
       def item(*args, &sub_block)
@@ -40,7 +40,7 @@ module QuickNav
 
     def transformation(&block)
       # DSL must be set up before the block is passed on again
-      def add(*args); Data.add(*args) end
+      def push(*args); Data.push(*args) end
       def rm(name); Data.rm(name) end
 
       Transformations.add(block)

@@ -253,10 +253,10 @@ HTML_END
       end
 
       # transform :signed_in
-      QuickNav::Data.add(:connections, "/connections")
-      QuickNav::Data.add(:inbox, "/messages")
-      QuickNav::Data.add(:portfolio, "/new_portfolio_setup")
-      QuickNav::Data.add(:dashboard, "/dashboard")
+      QuickNav::Data.push(:connections, "/connections")
+      QuickNav::Data.push(:inbox, "/messages")
+      QuickNav::Data.push(:portfolio, "/new_portfolio_setup")
+      QuickNav::Data.push(:dashboard, "/dashboard")
       QuickNav::Data.rm(:js_advice)
       QuickNav::Data.rm(:em_advice)
       QuickNav::Data.rm(:ed_advice)
@@ -314,10 +314,10 @@ HTML_END
       run do
         transformation do
           if signed_in == true
-            add :connections, "/connections"
-            add :inbox, "/messages"
-            add :portfolio, "/new_portfolio_setup"
-            add :dashboard, "/dashboard"
+            push :connections, "/connections"
+            push :inbox, "/messages"
+            push :portfolio, "/new_portfolio_setup"
+            push :dashboard, "/dashboard"
             rm :js_advice
             rm :em_advice
             rm :ed_advice
