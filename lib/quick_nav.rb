@@ -2,6 +2,7 @@ require 'quick_nav/data'
 require 'quick_nav/display'
 require 'quick_nav/sugar'
 require 'quick_nav/transformations'
+require 'quick_nav/core_ext'
 require 'quick_nav/railtie' if defined?(Rails) and Rails::VERSION::MAJOR == 3
 
 module QuickNav

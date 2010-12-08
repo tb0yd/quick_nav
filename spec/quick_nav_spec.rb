@@ -368,5 +368,27 @@ HTML_END
       QuickNav::Transformations.go!
       QuickNav::Data.get_row[2][2][:display].should == "Advice"
     end
+    
+    it "should let you add a sub-menu in a transformation" do
+      run do
+        QuickNav::Data.select_before_setup :settings
+
+        setup do
+          item :settings, "/settings"
+          item :search, "/search"
+        end
+
+        transformation do
+          push :settings do
+            item :privacy_settings, "/privacy"
+            item :password, "/password"
+          end
+        end
+      end
+
+      QuickNav::Transformations.go!
+      QuickNav::Data.get_row.collect { |i| i[0] }.should == [:settings, :search]
+      QuickNav::Data.get_row(:settings).collect { |i| i[0] }.should == [ :privacy_settings, :password ]
+    end
   end
 end
