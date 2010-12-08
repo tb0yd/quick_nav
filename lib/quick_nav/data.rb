@@ -49,8 +49,8 @@ module QuickNav
         else
           get_all_selected([url_to_codeword(@@selected)])
         end
-      elsif @@parents.has_key?(items.last) and @@parents[items.last].nil? == false
-        get_all_selected(items + [@@parents[items.last]])
+      elsif @@parents.has_key?(items.first) and @@parents[items.first].nil? == false
+        get_all_selected([@@parents[items.first]] + items)
       else
         items
       end

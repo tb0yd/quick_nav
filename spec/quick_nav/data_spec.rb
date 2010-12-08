@@ -63,8 +63,8 @@ describe QuickNav::Data do
       end
       
       it "should return them in order" do
-        Data.get_all_selected.include?(:settings2).should == true
-        Data.get_all_selected.include?(:settings).should == true
+        Data.get_all_selected.first.should == :settings
+        Data.get_all_selected.last.should == :settings2a
       end
     end
     
@@ -89,8 +89,8 @@ describe QuickNav::Data do
       end
       
       it "should return them in order" do
-        Data.get_all_selected.include?(:settings2).should == true
-        Data.get_all_selected.include?(:settings).should == true
+        Data.get_all_selected.first.should == :settings
+        Data.get_all_selected.last.should == :settings2a
       end
     end
   end
