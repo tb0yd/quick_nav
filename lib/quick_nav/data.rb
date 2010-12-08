@@ -41,9 +41,9 @@ module QuickNav
       raise "cannot select >1 item" if item.respond_to?(:each)
       @@selected = []
       if item.is_a?(Symbol)
-        select(item, :before_setup)
+        @@selected.unshift item unless is_selected?(item)
       elsif item.is_a?(String)
-        select(node_with_url(item), :before_setup)
+        @@selected.unshift(node_with_url(item)) unless is_selected?(item)
       end
     end
 
@@ -64,9 +64,7 @@ module QuickNav
     def self.select(item, option=nil)
       unless item.nil?
         @@selected.unshift item unless is_selected?(item)
-        unless option == :before_setup
-          select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
-        end
+        select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
       end
     end
     
