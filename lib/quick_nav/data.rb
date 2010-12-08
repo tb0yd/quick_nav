@@ -38,14 +38,22 @@ module QuickNav
 
     # called from the controller
     def self.select_before_setup(item)
-      raise "cannot select >1 item" if item.respond_to?(:include?)
+      raise "cannot select >1 item" if item.respond_to?(:each)
       @@selected = []
-      select(item, :before_setup)
+      if item.is_a?(Symbol)
+        select(item, :before_setup)
+      elsif item.is_a?(String)
+        select(node_with_url(item), :before_setup)
+      end
     end
 
     def self.get_selected
       select(@@selected[0])
       @@selected
+    end
+    
+    def self.node_with_url(url)
+      @@base.select { |item| item[1] == url }.first[0]
     end
 
     def self.is_selected?(item)

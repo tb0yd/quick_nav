@@ -72,6 +72,34 @@ HTML_END
       QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
     end
 
+    it "should allow you to select by URL" do
+      nav_html = <<-HTML_END
+<div class="menu_wrapper_bg">
+  <div class="menu_wrapper">
+    <ul class="column span-48 menu main_menu">
+      <li id="menu_nav_item_1">
+        <a href="/home">Item 1</a>
+      </li>
+      <li id="menu_nav_item_2" class="selected">
+        <a class="selected" href="/help">Item 2</a>
+      </li>
+    </ul>
+  </div>
+</div>
+HTML_END
+
+      QuickNav::Data.select_before_setup("/help")
+
+      run do
+        setup do
+          item :item_1, "/home"
+          item :item_2, "/help"
+        end
+      end
+
+      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+    end
+
     it "should QuickNav::Display the items in the order they were written in" do
       nav_html = <<-HTML_END
 <div class="menu_wrapper_bg">

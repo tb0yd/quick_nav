@@ -30,4 +30,12 @@ describe QuickNav::Data do
       lambda { Data.unshift({:parent => "parent"}) }.should raise_error
     end
   end
+  
+  describe "#by_url" do
+    it "should should return the correct node" do
+      Data.push(:settings, "/settings")
+      Data.push(:help, "/help")
+      Data.node_with_url("/help").should == :help
+    end
+  end
 end
