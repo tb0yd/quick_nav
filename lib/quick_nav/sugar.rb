@@ -39,19 +39,35 @@ module QuickNav
     end
 
     def transformation(&block)
+      @@parent = nil
+      
       # DSL must be set up before the block is passed on again
-      def push(*args, &block)
+      def item(name, &block)
         if block_given?
-          @@parent = args[0]
+          @@parent = name
           yield
+          @@parent = nil
+        end
+      end
+      
+      def push(*args)
+        if @@parent
+          Data.push(*(args.with_options(:parent => @@parent)))
         else
           Data.push(*args)
         end
       end
-      def unshift(*args); Data.unshift(*args) end
+      
+      def unshift(*args)
+        if @@parent
+          Data.unshift(*(args.with_options(:parent => @@parent)))
+        else
+          Data.unshift(*args)
+        end
+      end
+      
       def rm(name); Data.rm(name) end
       def update(*args); Data.update(*args) end
-      def item(*args); push(*(args.with_options(:parent => @@parent))) end
 
       Transformations.add(block)
     end

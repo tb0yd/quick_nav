@@ -379,9 +379,9 @@ HTML_END
         end
 
         transformation do
-          push :settings do
-            item :privacy_settings, "/privacy"
-            item :password, "/password"
+          item :settings do
+            push :privacy_settings, "/privacy"
+            push :password, "/password"
           end
         end
       end
@@ -389,6 +389,36 @@ HTML_END
       QuickNav::Transformations.go!
       QuickNav::Data.get_row.collect { |i| i[0] }.should == [:settings, :search]
       QuickNav::Data.get_row(:settings).collect { |i| i[0] }.should == [ :privacy_settings, :password ]
+    end
+
+    it "should let you manipulate submenus in transformations" do
+      run do
+        QuickNav::Data.select_before_setup :settings
+
+        setup do
+          item :settings, "/settings"
+          item :search, "/search"
+        end
+
+        transformation do
+          item :settings do
+            push :privacy_settings, "/privacy"
+            unshift :password, "/password"
+          end
+        end
+
+        transformation do
+          item :settings do
+            update :privacy_settings, "/privacy_settings"
+          end
+          push :home, "/home"
+        end
+      end
+
+      QuickNav::Transformations.go!
+      QuickNav::Data.get_row.collect { |i| i[0] }.should == [:settings, :search, :home]
+      QuickNav::Data.get_row(:settings).collect { |i| i[0] }.should == [ :password, :privacy_settings ]
+      QuickNav::Data.get_row(:settings)[1][1].should == "/privacy_settings"
     end
   end
 end
