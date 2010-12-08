@@ -30,9 +30,12 @@ module QuickNav
 
   module Helpers
     def render_navigation(*args)
+      Data.select_before_setup(request.env['PATH_INFO']) if Data.get_selected.empty?
+
       sugar = QuickNav::Sugar.new(self)
       sugar.default_display_method = method(:t)
       sugar.instance_eval(IO.read(File.join(RAILS_ROOT, "config", "navigation.rb")))
+      
       Transformations.go!
       Display.nav
     end
