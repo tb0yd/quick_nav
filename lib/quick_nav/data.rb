@@ -35,6 +35,10 @@ module QuickNav
     def self.get_row(parent=nil)
       @@base.select { |item| @@parents[item[0]] == parent }
     end
+    
+    def self.get_all_selected
+      @@selected
+    end
 
     # called from the controller
     def self.select_before_setup(item)

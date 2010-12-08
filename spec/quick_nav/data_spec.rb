@@ -31,11 +31,25 @@ describe QuickNav::Data do
     end
   end
   
-  describe "#by_url" do
+  describe "#node_with_url" do
     it "should should return the correct node" do
       Data.push(:settings, "/settings")
       Data.push(:help, "/help")
       Data.node_with_url("/help").should == :help
+    end
+  end
+  
+  describe "#get_all_selected" do
+    before(:each) do
+      Data.select_before_setup :settings2
+      Data.push(:settings, "/settings")
+      Data.push(:settings1, "/settings1", :parent => :settings)
+      Data.push(:settings2, "/settings2", :parent => :settings)
+      Data.push(:help, "/help")
+    end
+    
+    it "should return the selected node" do
+      Data.get_all_selected.include?(:settings2).should == true
     end
   end
 end
