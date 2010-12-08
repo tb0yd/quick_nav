@@ -94,4 +94,21 @@ describe QuickNav::Data do
       end
     end
   end
+  
+  describe "#reset" do
+    it "should reset all class variables used" do
+      Data.select_before_setup "/settings2a"
+      Data.push(:settings, "/settings")
+      Data.push(:settings1, "/settings1", :parent => :settings)
+      Data.push(:settings2, "/settings2", :parent => :settings)
+      Data.push(:settings2a, "/settings2a", :parent => :settings2)
+      Data.push(:help, "/help")
+      
+      Data.reset
+      
+      Data.get_selected.should be_nil
+      Data.get_all_selected.should be_empty
+      Data.get_row.should be_empty
+    end
+  end
 end

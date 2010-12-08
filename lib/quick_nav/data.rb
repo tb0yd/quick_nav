@@ -42,6 +42,7 @@ module QuickNav
     
     def self.get_all_selected(items=[])
       raise "cannot be called before setup because information has not been loaded yet" if !defined?(@@base)
+      return [] if @@base == [] # after reset
       
       if items.empty?
         if @@selected.is_a?(Symbol)
@@ -60,6 +61,12 @@ module QuickNav
     def self.select_before_setup(item)
       raise "cannot select >1 item" if item.respond_to?(:each)
       @@selected = item
+    end
+    
+    def self.reset
+      @@base = []
+      @@parents = {}
+      @@selected = nil
     end
     
     def self.url_to_codeword(url)

@@ -37,7 +37,9 @@ module QuickNav
       sugar.instance_eval(IO.read(File.join(RAILS_ROOT, "config", "navigation.rb")))
       
       Transformations.go!
-      Display.nav
+      result = Display.nav
+      QuickNav::Data.reset
+      result
     end
   end
 end
