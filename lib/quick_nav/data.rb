@@ -38,8 +38,8 @@ module QuickNav
     
     def self.get_all_selected(items=[])
       if items.empty?
-        get_all_selected(@@selected)
-      elsif @@parents.has_key?(items.last)
+        get_all_selected([@@selected])
+      elsif @@parents.has_key?(items.last) and @@parents[items.last].nil? == false
         get_all_selected(items + [@@parents[items.last]])
       else
         items
@@ -49,16 +49,11 @@ module QuickNav
     # called from the controller
     def self.select_before_setup(item)
       raise "cannot select >1 item" if item.respond_to?(:each)
-      @@selected = []
-      if item.is_a?(Symbol)
-        @@selected.unshift item unless is_selected?(item)
-      elsif item.is_a?(String)
-        @@selected.unshift(node_with_url(item)) unless is_selected?(item)
-      end
+      @@selected = item
     end
 
     def self.get_selected
-      select(@@selected[0]) if defined?(@@parents) # lazily select all parent nodes
+      select(@@selected) if defined?(@@parents) # lazily select all parent nodes
       @@selected
     end
     
@@ -67,13 +62,13 @@ module QuickNav
     end
 
     def self.is_selected?(item)
-      defined?(@@selected) and @@selected.include?(item)
+      defined?(@@selected) and @@selected == item
     end
 
     # there's no use case in server-side code for manually selecting a node after setup.
     def self.select(item, option=nil)
       unless item.nil?
-        @@selected.unshift item unless is_selected?(item)
+        @@selected = item unless is_selected?(item)
         select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
       end
     end

@@ -56,6 +56,12 @@ describe QuickNav::Data do
     it "should return all parents" do
       Data.get_all_selected.include?(:settings2).should == true
       Data.get_all_selected.include?(:settings).should == true
+      Data.get_all_selected.size.should == 3
+    end
+    
+    it "should return them in order" do
+      Data.get_all_selected.include?(:settings2).should == true
+      Data.get_all_selected.include?(:settings).should == true
     end
   end
 end

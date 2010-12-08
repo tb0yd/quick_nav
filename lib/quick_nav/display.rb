@@ -10,7 +10,7 @@ module QuickNav
         '</ul></div></div>')
 
       # do the sub navs
-      Data.get_selected.each do |selected|
+      Data.get_all_selected.each do |selected|
         result += line(
           '<div class="sub_menu_wrapper_bg"><div class="sub_menu_wrapper"><ul class="menu sub_menu">',
           Data.get_row(selected),
@@ -37,7 +37,7 @@ module QuickNav
       opts ||= {}
       name = opts[:display] || @@default_method[sym_name]
 
-      if Data.get_selected.include?(sym_name)
+      if Data.get_all_selected.include?(sym_name)
         %(<li id="menu_nav_#{sym_name}" class="selected"><a class="selected" href="#{url}">#{name}</a></li>)
       else
         %(<li id="menu_nav_#{sym_name}"><a href="#{url}">#{name}</a></li>)
