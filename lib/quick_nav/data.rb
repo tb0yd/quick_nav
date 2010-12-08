@@ -51,28 +51,9 @@ module QuickNav
       raise "cannot select >1 item" if item.respond_to?(:each)
       @@selected = item
     end
-
-    def self.get_selected
-      select(@@selected) if defined?(@@parents) # lazily select all parent nodes
-      @@selected
-    end
     
     def self.node_with_url(url)
       @@base.select { |item| item[1] == url }.first[0]
     end
-
-    def self.is_selected?(item)
-      defined?(@@selected) and @@selected == item
-    end
-
-    # there's no use case in server-side code for manually selecting a node after setup.
-    def self.select(item, option=nil)
-      unless item.nil?
-        @@selected = item unless is_selected?(item)
-        select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
-      end
-    end
-    
-    private_class_method :is_selected?, :select
   end
 end
