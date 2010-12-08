@@ -27,6 +27,17 @@ describe QuickNav::Data do
       Data.get_row[1][0].should == :logout
     end
   end
+
+  describe "#update" do
+    it "should not reset the options if you don't provide any" do
+      Data.select_before_setup :settings
+      Data.push(:settings, "/settings", :display => "Test")
+      Data.push(:help, "/help")
+      Data.push(:logout, "/logout", :after => :settings)
+      
+      Data.update(:settings)
+    end
+  end
   
   describe "#unshift" do
     it "should raise an error if given <2 arguments" do

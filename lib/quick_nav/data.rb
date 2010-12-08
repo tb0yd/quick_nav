@@ -35,7 +35,13 @@ module QuickNav
     end
 
     def self.update(*args)
-      @@base.collect! { |item| item[0] == args[0] ? args : item }
+      @@base.collect! do |item|
+        if item[0] == args[0]
+          [ args[0], args[1] || item[1], args[2] || item[2] ]
+        else
+          item
+        end
+      end
     end
 
     def self.get_row(parent=nil)
