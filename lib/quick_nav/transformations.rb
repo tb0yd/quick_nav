@@ -1,7 +1,8 @@
 module QuickNav
   module Transformations
+    @@transformations = []
+
     def self.add(block)
-      @@transformations ||= []
       @@transformations << block
     end
 
