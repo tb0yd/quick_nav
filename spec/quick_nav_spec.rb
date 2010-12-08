@@ -73,7 +73,6 @@ HTML_END
     end
 
     it "should allow you to select by URL" do
-      pending
       nav_html = <<-HTML_END
 <div class="menu_wrapper_bg">
   <div class="menu_wrapper">
