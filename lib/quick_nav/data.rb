@@ -70,10 +70,6 @@ module QuickNav
       end
     end
     
-    def self.select_r(item)
-      select(@@parents[item]) if @@parents.has_key?(item) # also select each parent
-    end
-    
-    private_class_method :is_selected?, :select, :select_r
+    private_class_method :is_selected?, :select
   end
 end
