@@ -9,7 +9,13 @@ module QuickNav
     def self.push(k, v, h={})
       raise "you must provide a symbol id and a url for a new item" if !k or !v or v.respond_to?(:merge)
       parent = h.delete(:parent)
-      @@base << [k, v, h]
+      preceding_item_id = h.delete(:after)
+      
+      if preceding_item_id
+        @@base.insert(@@base.collect(&:first).index(preceding_item_id) + 1, [k, v, h])
+      else
+        @@base << [k, v, h]
+      end
       @@parents.store(k, parent)
     end
 

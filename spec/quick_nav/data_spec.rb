@@ -17,6 +17,15 @@ describe QuickNav::Data do
       lambda { Data.push(:settings, {:parent => "parent"}) }.should raise_error
       lambda { Data.push({:parent => "parent"}) }.should raise_error
     end
+    
+    it "should allow you to choose where to put it in the list" do
+      Data.select_before_setup :settings
+      Data.push(:settings, "/settings")
+      Data.push(:help, "/help")
+      Data.push(:logout, "/logout", :after => :settings)
+
+      Data.get_row[1][0].should == :logout
+    end
   end
   
   describe "#unshift" do
