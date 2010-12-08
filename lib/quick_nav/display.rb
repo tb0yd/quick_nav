@@ -1,7 +1,7 @@
-require 'active_support/inflector'
-
 module QuickNav
   module Display
+    def self.default_method=(method); @@default_method = method end
+    
     def self.nav
       # do the primary nav
       result = line(
@@ -35,7 +35,7 @@ module QuickNav
     def self.item(item)
       sym_name, url, opts = *item
       opts ||= {}
-      name = opts[:display] || sym_name.to_s.humanize
+      name = opts[:display] || @@default_method[sym_name]
 
       if Data.get_selected.include?(sym_name)
         %(<li id="menu_nav_#{sym_name}" class="selected"><a class="selected" href="#{url}">#{name}</a></li>)

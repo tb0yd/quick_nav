@@ -7,6 +7,11 @@ describe QuickNav do
   end
 
   def run(&block)
+    def mock_translation_method(sym)
+      sym.to_s.humanize
+    end
+
+    @sugar.default_display_method = method(:mock_translation_method)
     @sugar.instance_eval &block
   end
 

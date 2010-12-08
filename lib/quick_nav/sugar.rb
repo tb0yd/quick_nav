@@ -71,5 +71,9 @@ module QuickNav
 
       Transformations.add(block)
     end
+    
+    def default_display_method=(method)
+      Display.default_method = method
+    end
   end
 end
