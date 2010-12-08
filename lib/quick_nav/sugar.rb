@@ -18,12 +18,12 @@ module QuickNav
       # redirect the control flow
       old_addition = @@addition if defined?(@@addition)
       old_recursion = @@recursion if defined?(@@recursion)
-      @@addition = lambda { |k, v, h| Data.push(k, v, h, parent) }
+      @@addition = lambda { |k, v, h| Data.push(k, v, h.merge(:parent => parent)) }
       @@recursion = lambda { |next_parent, sub_block| setup(next_parent, &sub_block) }
 
       def item(*args, &sub_block)
         k, v, h = *args
-        @@addition[k, v, h]
+        @@addition[k, v, h || {}]
         if sub_block
           @@recursion[k, sub_block]
         end

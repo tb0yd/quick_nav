@@ -6,12 +6,14 @@ module QuickNav
       @@parents = {} # hash to store the parent node of each item (if there is one)
     end
 
-    def self.push(k, v, h={}, parent=nil)
+    def self.push(k, v, h={})
+      parent = h.delete(:parent)
       @@base << [k, v, h]
       @@parents.store(k, parent)
     end
 
-    def self.unshift(k, v, h={}, parent=nil)
+    def self.unshift(k, v, h={})
+      parent = h.delete(:parent)
       @@base.unshift([k, v, h])
       @@parents.store(k, parent)
     end
