@@ -41,15 +41,21 @@ describe QuickNav::Data do
   
   describe "#get_all_selected" do
     before(:each) do
-      Data.select_before_setup :settings2
+      Data.select_before_setup :settings2a
       Data.push(:settings, "/settings")
       Data.push(:settings1, "/settings1", :parent => :settings)
       Data.push(:settings2, "/settings2", :parent => :settings)
+      Data.push(:settings2a, "/settings2a", :parent => :settings2)
       Data.push(:help, "/help")
     end
     
     it "should return the selected node" do
+      Data.get_all_selected.include?(:settings2a).should == true
+    end
+    
+    it "should return all parents" do
       Data.get_all_selected.include?(:settings2).should == true
+      Data.get_all_selected.include?(:settings).should == true
     end
   end
 end

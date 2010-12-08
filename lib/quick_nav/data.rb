@@ -36,8 +36,14 @@ module QuickNav
       @@base.select { |item| @@parents[item[0]] == parent }
     end
     
-    def self.get_all_selected
-      @@selected
+    def self.get_all_selected(items=[])
+      if items.empty?
+        get_all_selected(@@selected)
+      elsif @@parents.has_key?(items.last)
+        get_all_selected(items + [@@parents[items.last]])
+      else
+        items
+      end
     end
 
     # called from the controller
