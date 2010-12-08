@@ -239,8 +239,8 @@ HTML_END
     end
   end
 
-  describe "#transform" do
-    it "should transform the menu from signed out to signed in" do
+  describe "#setup" do
+    it "should behave as expected with realistic input" do
       QuickNav::Data.select_before_setup :search_careers
 
       run do
@@ -310,9 +310,7 @@ HTML_END
       QuickNav::Data.get_selected.include?(:search_careers).should be_true
       QuickNav::Data.get_selected.include?(:search_industries).should_not be_true
     end
-  end
 
-  describe "#transformation" do
     it "should have an 'unshift' method for adding items to the beginning of the nav" do
       run do
         transformation do
