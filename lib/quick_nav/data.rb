@@ -48,7 +48,7 @@ module QuickNav
     end
 
     def self.get_selected
-      select(@@selected[0])
+      select(@@selected[0]) if defined?(@@parents) # lazily select all parent nodes
       @@selected
     end
     
