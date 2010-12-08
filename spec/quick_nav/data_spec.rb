@@ -31,6 +31,16 @@ describe QuickNav::Data do
     end
   end
   
+  describe "#get_selected" do
+    before(:each) do
+      Data.select_before_setup :settings2a
+    end
+
+    it "should return the selected node info that was provided" do
+      Data.get_selected.should == :settings2a
+    end
+  end
+  
   describe "#get_all_selected" do
     describe "given a symbol" do
       before(:each) do

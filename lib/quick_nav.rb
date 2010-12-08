@@ -30,7 +30,7 @@ module QuickNav
 
   module Helpers
     def render_navigation(*args)
-      Data.select_before_setup(request.env['PATH_INFO']) if Data.get_selected.empty?
+      Data.select_before_setup(request.env['PATH_INFO']) if Data.get_selected.nil?
 
       sugar = QuickNav::Sugar.new(self)
       sugar.default_display_method = method(:t)

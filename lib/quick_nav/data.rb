@@ -36,6 +36,10 @@ module QuickNav
       @@base.select { |item| @@parents[item[0]] == parent }
     end
     
+    def self.get_selected
+      defined?(@@selected) ? @@selected : nil
+    end
+    
     def self.get_all_selected(items=[])
       raise "cannot be called before setup because information has not been loaded yet" if !defined?(@@base)
       
