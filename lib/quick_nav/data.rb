@@ -7,12 +7,14 @@ module QuickNav
     end
 
     def self.push(k, v, h={})
+      raise "you must provide a symbol id and a url for a new item" if !k or !v or v.respond_to?(:merge)
       parent = h.delete(:parent)
       @@base << [k, v, h]
       @@parents.store(k, parent)
     end
 
     def self.unshift(k, v, h={})
+      raise "you must provide a symbol id and a url for a new item" if !k or !v or v.respond_to?(:merge)
       parent = h.delete(:parent)
       @@base.unshift([k, v, h])
       @@parents.store(k, parent)
