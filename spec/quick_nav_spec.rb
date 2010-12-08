@@ -384,7 +384,7 @@ HTML_END
         end
 
         transformation do
-          item :settings do
+          update :settings do
             push :privacy_settings, "/privacy"
             push :password, "/password"
           end
@@ -406,14 +406,14 @@ HTML_END
         end
 
         transformation do
-          item :settings do
+          update :settings do
             push :privacy_settings, "/privacy"
             unshift :password, "/password"
           end
         end
 
         transformation do
-          item :settings do
+          update :settings do
             update :privacy_settings, "/privacy_settings"
           end
           push :home, "/home"
@@ -423,6 +423,40 @@ HTML_END
       QuickNav::Transformations.go!
       QuickNav::Data.get_row.collect { |i| i[0] }.should == [:settings, :search, :home]
       QuickNav::Data.get_row(:settings).collect { |i| i[0] }.should == [ :password, :privacy_settings ]
+      QuickNav::Data.get_row(:settings)[1][1].should == "/privacy_settings"
+    end
+
+    it "should allow multiple subnavs in transformations" do
+      run do
+        QuickNav::Data.select_before_setup :settings
+
+        setup do
+          item :settings, "/settings"
+          item :search, "/search"
+        end
+
+        transformation do
+          update :settings do
+            push :privacy_settings, "/privacy" do
+              push :email, "/email"
+              push :profile, "/profile"
+            end
+            unshift :password, "/password"
+          end
+        end
+
+        transformation do
+          update :settings do
+            update :privacy_settings, "/privacy_settings"
+          end
+          push :home, "/home"
+        end
+      end
+
+      QuickNav::Transformations.go!
+      QuickNav::Data.get_row.collect { |i| i[0] }.should == [:settings, :search, :home]
+      QuickNav::Data.get_row(:settings).collect { |i| i[0] }.should == [ :password, :privacy_settings ]
+      QuickNav::Data.get_row(:privacy_settings).collect { |i| i[0] }.should == [ :email, :profile ]
       QuickNav::Data.get_row(:settings)[1][1].should == "/privacy_settings"
     end
   end
