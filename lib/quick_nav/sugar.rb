@@ -22,7 +22,7 @@ module QuickNav
       @@recursion = lambda { |next_parent, sub_block| setup(next_parent, &sub_block) }
 
       def item(*args, &sub_block)
-        k, v, h = *args
+        k, v, h = *(include_omitted_hash_key(*args))
         @@addition[k, v, h || {}]
         if sub_block
           @@recursion[k, sub_block]
@@ -43,6 +43,7 @@ module QuickNav
       
       # DSL must be set up before the block is passed on again
       def push(*args)
+        args = include_omitted_hash_key(*args)
         unless @@parents.empty?
           Data.push(*(args.with_options(:parent => @@parents.last)))
         else
@@ -56,6 +57,7 @@ module QuickNav
       end
       
       def unshift(*args)
+        args = include_omitted_hash_key(*args)
         unless @@parents.empty?
           Data.unshift(*(args.with_options(:parent => @@parents.last)))
         else
@@ -69,6 +71,7 @@ module QuickNav
       end
       
       def update(*args, &block)
+        args = include_omitted_hash_key(*args)
         Data.update(*args)
         if block_given?
           @@parents << args[0]
@@ -84,6 +87,16 @@ module QuickNav
     
     def default_display_method=(method)
       Display.default_method = method
+    end
+    
+    private
+    
+    def include_omitted_hash_key(*args)
+      if args[2] and args[2].respond_to?(:gsub)
+        [args[0], args[1], {:display => args[2]}]
+      else
+        args
+      end
     end
   end
 end
