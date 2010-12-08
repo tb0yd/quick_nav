@@ -19,11 +19,15 @@ module QuickNav
           base.helper_method :render_navigation
         end
       end
+      
+      def current_navigation(item)
+        QuickNav::Data.select_before_setup(item)
+      end
     end
 
     module ClassMethods
       def navigation(item)
-        Data.select_before_setup(item) # must be called before setup, because this is here, and setup is in the helper
+        QuickNav::Data.select_before_setup(item)
       end
     end
   end
