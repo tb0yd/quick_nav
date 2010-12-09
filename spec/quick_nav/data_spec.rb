@@ -32,10 +32,9 @@ describe QuickNav::Data do
     it "should not reset the options if you don't provide any" do
       Data.select_before_setup :settings
       Data.push(:settings, "/settings", :display => "Test")
-      Data.push(:help, "/help")
-      Data.push(:logout, "/logout", :after => :settings)
-      
       Data.update(:settings)
+      Data.get_row[0][1].should == "/settings"
+      Data.get_row[0][2].should == {:display => "Test"}
     end
   end
   
@@ -52,11 +51,8 @@ describe QuickNav::Data do
   end
   
   describe "#get_selected" do
-    before(:each) do
-      Data.select_before_setup :settings2a
-    end
-
     it "should return the selected node info that was provided" do
+      Data.select_before_setup :settings2a
       Data.get_selected.should == :settings2a
     end
   end
