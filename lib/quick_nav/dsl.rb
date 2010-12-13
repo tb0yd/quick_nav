@@ -1,13 +1,6 @@
+require 'delegate'
 module QuickNav
-  class DSL
-    def initialize(context)
-      @context = context
-    end
-
-    def method_missing(sym, *args, &block)
-      @context.send sym, *args, &block
-    end
-
+  class DSL < SimpleDelegator
     # this method is complex so we can have the simple 'item x x' DSL.
     def setup(parent=nil)
       if parent.nil?   # reset base_nav only at beginning
