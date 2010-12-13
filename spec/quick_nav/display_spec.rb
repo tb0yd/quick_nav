@@ -2,8 +2,7 @@ require File.join(File.dirname(__FILE__), '../../lib/quick_nav/display')
 require File.join(File.dirname(__FILE__), '../spec_helper.rb')
 
 describe QuickNav::Display do
-  it "should load an erb template" do
-    nav_html = <<-HTML_END
+NAV_HTML = <<-HTML_END
 <div class="menu_wrapper_bg">
   <div class="menu_wrapper">
     <ul class="column span-48 menu main_menu">
@@ -18,30 +17,26 @@ describe QuickNav::Display do
 </div>
 HTML_END
 
-    QuickNav::Display.select(:item_1)
-
-    run do
-      setup do
-        item :item_1, "/home"
-        item :item_2, "/help"
+  describe "#nav" do
+    before(:each) do
+      QuickNav::Display.select(:item_1)
+      run do
+        setup do
+          item :item_1, "/home"
+          item :item_2, "/help"
+        end
       end
     end
 
-    QuickNav::Display.load_template(SAMPLE_TEMPLATE)
-    QuickNav::Display.nav.should roughly_match(nav_html)
-  end
-
-  describe "#selected" do
-    it "should return the selected node" do
-      QuickNav::Display.select(:item_1)
-      QuickNav::Display.selected.should == :item_1
+    it "should load an erb template" do
+      QuickNav::Display.load_template(SAMPLE_TEMPLATE)
+      QuickNav::Display.nav.should roughly_match(NAV_HTML)
     end
-  end
 
-  describe "#reset" do
+    # the logic here is that the nav will only be rendered once per controller action.
     it "should reset the selected node to nil" do
-      QuickNav::Display.select(:item_1)
-      QuickNav::Display.reset
+      QuickNav::Display.selected.should == :item_1
+      QuickNav::Display.nav
       QuickNav::Display.selected.should be_nil
     end
   end

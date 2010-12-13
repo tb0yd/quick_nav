@@ -9,7 +9,9 @@ module QuickNav
     end
 
     def self.nav
-      @@template.result(binding())
+      result = @@template.result(binding())
+      @@selected = nil
+      result
     end
 
     def self.main_menu(&block)
@@ -39,6 +41,5 @@ module QuickNav
       @@selected = code_name
     end
     def self.selected; @@selected end
-    def self.reset; @@selected = nil end
   end
 end
