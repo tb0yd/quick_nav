@@ -2,24 +2,9 @@ require File.join(File.dirname(__FILE__), '../../lib/quick_nav/display')
 require File.join(File.dirname(__FILE__), '../spec_helper.rb')
 
 describe QuickNav::Display do
-NAV_HTML = <<-HTML_END
-<div class="menu_wrapper_bg">
-  <div class="menu_wrapper">
-    <ul class="column span-48 menu main_menu">
-      <li id="menu_nav_item_1" class="selected">
-        <a class="selected" href="/home">Item 1</a>
-      </li>
-      <li id="menu_nav_item_2">
-        <a href="/help">Item 2</a>
-      </li>
-    </ul>
-  </div>
-</div>
-HTML_END
 
   describe "#nav" do
     before(:each) do
-      QuickNav::Display.select(:item_1)
       run do
         setup do
           item :item_1, "/home"
@@ -29,7 +14,40 @@ HTML_END
     end
 
     it "should load an erb template" do
-      QuickNav::Display.nav.should roughly_match(NAV_HTML)
+      QuickNav::Display.select(:item_1)
+      nav_html = <<-HTML_END
+      <div class="menu_wrapper_bg">
+        <div class="menu_wrapper">
+          <ul class="column span-48 menu main_menu">
+            <li id="menu_nav_item_1" class="selected">
+              <a class="selected" href="/home">Item 1</a>
+            </li>
+            <li id="menu_nav_item_2">
+              <a href="/help">Item 2</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      HTML_END
+      QuickNav::Display.nav.should roughly_match(nav_html)
+    end
+
+    it "should display the base nav with no item selected" do
+      nav_html = <<-HTML_END
+      <div class="menu_wrapper_bg">
+        <div class="menu_wrapper">
+          <ul class="column span-48 menu main_menu">
+            <li id="menu_nav_item_1">
+              <a href="/home">Item 1</a>
+            </li>
+            <li id="menu_nav_item_2">
+              <a href="/help">Item 2</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      HTML_END
+      QuickNav::Display.nav.should roughly_match(nav_html)
     end
   end
 

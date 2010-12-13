@@ -27,7 +27,22 @@ describe QuickNav::DSL do
         end
       end
     end
- 
+
+    it "should execute in the context it is called in" do
+      signed_in = false
+      run do
+        transformation do
+          if signed_in
+            push :item_2, "/help", "Test"
+          end
+        end
+      end
+      signed_in = true
+
+      QuickNav::Transformations.go!
+      QuickNav::Data.get_row[1][2][:display].should == "Test"
+    end
+
     describe "#push" do
       it "should understand the omitted option key :display" do
         run do
@@ -35,7 +50,7 @@ describe QuickNav::DSL do
             push :item_2, "/help", "Test"
           end
         end
-  
+
         QuickNav::Transformations.go!
         QuickNav::Data.get_row[1][2][:display].should == "Test"
       end
@@ -48,7 +63,7 @@ describe QuickNav::DSL do
             unshift :dashboard, "/dashboard"
           end
         end
-        
+
         QuickNav::Transformations.go!
         QuickNav::Data.get_row.collect { |i| i[0] }.should == [:dashboard, :item_1]
       end
@@ -59,7 +74,7 @@ describe QuickNav::DSL do
             unshift :item_2, "/help", "Test"
           end
         end
-  
+
         QuickNav::Transformations.go!
         QuickNav::Data.get_row[0][2][:display].should == "Test"
       end
@@ -72,23 +87,23 @@ describe QuickNav::DSL do
             update :item_1, "/home", :display => "Test"
           end
         end
-  
+
         QuickNav::Transformations.go!
         QuickNav::Data.get_row[0][2][:display].should == "Test"
       end
-      
+
       it "should understand the omitted option key :display" do
         run do
           transformation do
             update :item_1, "/help", "Test"
           end
         end
-  
+
         QuickNav::Transformations.go!
         QuickNav::Data.get_row[0][2][:display].should == "Test"
       end
     end
-    
+
     it "should let you define a transformation applied to the menu if a condition is met" do
       signed_in = false
 

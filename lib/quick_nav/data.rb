@@ -10,7 +10,7 @@ module QuickNav
       raise "you must provide a symbol id and a url for a new item" if !k or !v or v.respond_to?(:merge)
       parent = h.delete(:parent)
       preceding_item_id = h.delete(:after)
-      
+
       if preceding_item_id
         @@base.insert(@@base.collect(&:first).index(preceding_item_id) + 1, [k, v, h])
       else
@@ -47,11 +47,11 @@ module QuickNav
     def self.get_row(parent=nil)
       @@base.select { |item| @@parents[item[0]] == parent }
     end
-    
-    def self.ancestors_for(items)
+
+    def self.ancestors_for(items=nil)
       raise "cannot be called before setup because information has not been loaded yet" if !defined?(@@base)
-      return [] if @@base == [] # after reset
-      
+      return [] if @@base == [] or items == nil # after reset
+
       if items.is_a?(String)
         ancestors_for([url_to_codeword(items)])
       elsif items.is_a?(Symbol)
@@ -62,11 +62,11 @@ module QuickNav
         items
       end
     end
-    
+
     def self.url_to_codeword(url)
       @@base.select { |item| item[1] == url }.first[0]
     end
-    
+
     private_class_method :url_to_codeword
   end
 end

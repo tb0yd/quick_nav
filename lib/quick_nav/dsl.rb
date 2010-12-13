@@ -33,7 +33,7 @@ module QuickNav
 
     def transformation(&block)
       @@parents = []
-      
+
       # DSL must be set up before the block is passed on again
       def push(*args)
         args = include_omitted_hash_key(*args)
@@ -48,7 +48,7 @@ module QuickNav
           @@parents.pop
         end
       end
-      
+
       def unshift(*args)
         args = include_omitted_hash_key(*args)
         unless @@parents.empty?
@@ -62,7 +62,7 @@ module QuickNav
           @@parents.pop
         end
       end
-      
+
       def update(*args, &block)
         args = include_omitted_hash_key(*args)
         Data.update(*args)
@@ -74,16 +74,16 @@ module QuickNav
       end
 
       def rm(name); Data.rm(name) end
-      
+
       Transformations.add(block)
     end
-    
+
     def default_display_method=(method)
       Display.default_method = method
     end
-    
+
     private
-    
+
     def include_omitted_hash_key(*args)
       if args[2] and args[2].respond_to?(:gsub)
         [args[0], args[1], {:display => args[2]}]
