@@ -3,7 +3,7 @@ require 'quick_nav'
 describe QuickNav do
   
   before(:each) do
-    @sugar = QuickNav::Sugar.new(self)
+    @dsl = QuickNav::DSL.new(self)
   end
 
   def run(&block)
@@ -11,8 +11,8 @@ describe QuickNav do
       sym.to_s.humanize
     end
 
-    @sugar.default_display_method = method(:mock_translation_method)
-    @sugar.instance_eval &block
+    @dsl.default_display_method = method(:mock_translation_method)
+    @dsl.instance_eval &block
   end
 
   describe "#nav" do

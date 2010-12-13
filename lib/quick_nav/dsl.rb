@@ -1,5 +1,5 @@
 module QuickNav
-  class Sugar
+  class DSL
     def initialize(context)
       @context = context
     end

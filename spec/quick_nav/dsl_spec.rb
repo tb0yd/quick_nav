@@ -1,19 +1,19 @@
 require 'quick_nav'
 require File.join(File.dirname(__FILE__), '../spec_helper')
 
-describe QuickNav::Sugar do
+describe QuickNav::DSL do
   include QuickNav
 
   before(:each) do
-    @sugar = QuickNav::Sugar.new(self)
+    @dsl = QuickNav::DSL.new(self)
   end
   
   def run(&block)
     def mock_translation_method(sym)
       sym.to_s.humanize
     end
-    @sugar.default_display_method = method(:mock_translation_method)
-    @sugar.instance_eval &block
+    @dsl.default_display_method = method(:mock_translation_method)
+    @dsl.instance_eval &block
   end
 
   describe "#setup" do
