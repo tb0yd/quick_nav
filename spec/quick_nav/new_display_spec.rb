@@ -5,46 +5,38 @@ SAMPLE_TEMPLATE = <<HTML_END
 <div class="menu_wrapper_bg">
   <div class="menu_wrapper">
     <ul class="column span-48 menu main_menu">
-      <% Data.get_row.each do |item| %>
-        <% sym_name, url, opts = *item
-           opts ||= {}
-           name = opts[:display] || @@default_method[sym_name] %>
-        <% if Data.get_all_selected.include?(sym_name) %>
-          <li id="menu_nav_<%= sym_name %>" class="selected">
-            <a class="selected" href="<%= url %>"><%= name %></a>
+      <% main_menu do |code_name, word_name, url, selected| %>
+        <% if selected %>
+          <li id="menu_nav_<%= code_name %>" class="selected">
+            <a class="selected" href="<%= url %>"><%= word_name %></a>
           </li>
         <% else %>
-          <li id="menu_nav_<%= sym_name %>">
-            <a href="<%= url %>"><%= name %></a>
+          <li id="menu_nav_<%= code_name %>">
+            <a href="<%= url %>"><%= word_name %></a>
           </li>
         <% end %>
       <% end %>
     </ul>
   </div>
 </div>
-<% Data.get_all_selected.each do |selected| %>
-  <% unless Data.get_row(selected).empty? %>
+<% sub_menus do |item| %>
     <div class="sub_menu_wrapper_bg">
       <div class="sub_menu_wrapper">
         <ul class="menu sub_menu">
-          <% Data.get_row(selected).each do |item| %>
-            <% sym_name, url, opts = *item
-               opts ||= {}
-               name = opts[:display] || @@default_method[sym_name] %>
-            <% if Data.get_all_selected.include?(sym_name) %>
-              <li id="menu_nav_<%= sym_name %>" class="selected">
-                <a class="selected" href="<%= url %>"><%= name %></a>
+          <% each_row_in item do |code_name, word_name, url, selected| %>
+            <% if selected %>
+              <li id="menu_nav_<%= code_name %>" class="selected">
+                <a class="selected" href="<%= url %>"><%= word_name %></a>
               </li>
             <% else %>
-              <li id="menu_nav_<%= sym_name %>">
-                <a href="<%= url %>"><%= name %></a>
+              <li id="menu_nav_<%= code_name %>">
+                <a href="<%= url %>"><%= word_name %></a>
               </li>
             <% end %>
           <% end %>
         </ul>
       </div>
     </div>
-  <% end %>
 <% end %>
 HTML_END
 
