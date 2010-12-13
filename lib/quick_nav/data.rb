@@ -48,19 +48,15 @@ module QuickNav
       @@base.select { |item| @@parents[item[0]] == parent }
     end
     
-    def self.get_selected
-      defined?(@@selected) ? @@selected : nil
-    end
-    
     def self.get_all_selected(items=[])
       raise "cannot be called before setup because information has not been loaded yet" if !defined?(@@base)
       return [] if @@base == [] # after reset
       
       if items.empty?
-        if @@selected.is_a?(Symbol)
-          get_all_selected([@@selected])
+        if selected.is_a?(Symbol)
+          get_all_selected([selected])
         else
-          get_all_selected([url_to_codeword(@@selected)])
+          get_all_selected([url_to_codeword(selected)])
         end
       elsif @@parents.has_key?(items.first) and @@parents[items.first].nil? == false
         get_all_selected([@@parents[items.first]] + items)
@@ -85,6 +81,10 @@ module QuickNav
       @@base.select { |item| item[1] == url }.first[0]
     end
     
-    private_class_method :url_to_codeword
+    def self.selected
+      QuickNav::Display.selected
+    end
+    
+    private_class_method :url_to_codeword, :selected
   end
 end

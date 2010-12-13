@@ -11,7 +11,6 @@ module QuickNav
         block.call
       end
 
-      # a good place to reset (FIXME)
       @@transformations = []
     end
   end

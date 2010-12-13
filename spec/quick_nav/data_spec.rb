@@ -4,7 +4,7 @@ describe QuickNav::Data do
   include QuickNav
 
   before(:each) do
-    QuickNav::Data::init_all
+    QuickNav::Data::reset
   end
   
   describe "#push" do
@@ -50,17 +50,10 @@ describe QuickNav::Data do
     end
   end
   
-  describe "#get_selected" do
-    it "should return the selected node info that was provided" do
-      QuickNav::Data.select :settings2a
-      QuickNav::Data.get_selected.should == :settings2a
-    end
-  end
-  
   describe "#get_all_selected" do
     describe "given a symbol" do
       before(:each) do
-        QuickNav::Data.select :settings2a
+        QuickNav::Display.select :settings2a
         QuickNav::Data.push(:settings, "/settings")
         QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
         QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)
@@ -113,7 +106,6 @@ describe QuickNav::Data do
   
   describe "#reset" do
     it "should reset all class variables used" do
-      QuickNav::Data.select "/settings2a"
       QuickNav::Data.push(:settings, "/settings")
       QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
       QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)
@@ -122,7 +114,6 @@ describe QuickNav::Data do
       
       QuickNav::Data.reset
       
-      QuickNav::Data.get_selected.should be_nil
       QuickNav::Data.get_all_selected.should be_empty
       QuickNav::Data.get_row.should be_empty
     end

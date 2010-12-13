@@ -34,5 +34,11 @@ module QuickNav
         yield code_name, word_name, url, selected
       end
     end
+
+    def self.select(code_name)
+      @@selected = code_name
+    end
+    def self.selected; @@selected end
+    def self.reset; @@selected = nil end
   end
 end

@@ -18,7 +18,7 @@ describe QuickNav::Display do
 </div>
 HTML_END
 
-    QuickNav::Data.select(:item_1)
+    QuickNav::Display.select(:item_1)
 
     run do
       setup do
@@ -29,5 +29,20 @@ HTML_END
 
     QuickNav::Display.load_template(SAMPLE_TEMPLATE)
     QuickNav::Display.nav.should roughly_match(nav_html)
+  end
+
+  describe "#selected" do
+    it "should return the selected node" do
+      QuickNav::Display.select(:item_1)
+      QuickNav::Display.selected.should == :item_1
+    end
+  end
+
+  describe "#reset" do
+    it "should reset the selected node to nil" do
+      QuickNav::Display.select(:item_1)
+      QuickNav::Display.reset
+      QuickNav::Display.selected.should be_nil
+    end
   end
 end

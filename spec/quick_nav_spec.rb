@@ -23,7 +23,7 @@ describe QuickNav do
 </div>
 HTML_END
 
-      QuickNav::Data.select(:item_2)
+      QuickNav::Display.select(:item_2)
 
       run do
         setup do
@@ -51,7 +51,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select("/help")
+      QuickNav::Display.select("/help")
 
       run do
         setup do
@@ -85,7 +85,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select(:item_2)
+      QuickNav::Display.select(:item_2)
 
       run do
         setup do
@@ -121,7 +121,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select(:item_2)
+      QuickNav::Display.select(:item_2)
 
       run do
         setup do
@@ -166,7 +166,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select(:settings)
+      QuickNav::Display.select(:settings)
 
       run do
         setup do
@@ -213,7 +213,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select(:item_1)
+      QuickNav::Display.select(:item_1)
 
       run do
         setup do
@@ -237,7 +237,7 @@ HTML_END
 
   describe "#setup" do
     it "should behave as expected with realistic input" do
-      QuickNav::Data.select :search_careers
+      QuickNav::Display.select :search_careers
 
       run do
         setup do
@@ -283,7 +283,7 @@ HTML_END
           end
         end
 
-        QuickNav::Data.select :search_careers
+        QuickNav::Display.select :search_careers
 
         setup do
           item :careers, "/search_occupations" do
@@ -319,7 +319,7 @@ HTML_END
           rm :ed_advice
         end
 
-        QuickNav::Data.select :search_careers
+        QuickNav::Display.select :search_careers
 
         setup do
           item :careers, "/search_occupations" do
@@ -348,7 +348,7 @@ HTML_END
           update :js_advice, "/js_resources", :display => "Advice"
         end
 
-        QuickNav::Data.select :search_careers
+        QuickNav::Display.select :search_careers
 
         setup do
           item :careers, "/search_occupations" do
@@ -367,7 +367,7 @@ HTML_END
     
     it "should let you add a sub-menu in a transformation" do
       run do
-        QuickNav::Data.select :settings
+        QuickNav::Display.select :settings
 
         setup do
           item :settings, "/settings"
@@ -389,7 +389,7 @@ HTML_END
 
     it "should let you manipulate submenus in transformations" do
       run do
-        QuickNav::Data.select :settings
+        QuickNav::Display.select :settings
 
         setup do
           item :settings, "/settings"
@@ -419,7 +419,7 @@ HTML_END
 
     it "should allow multiple subnavs in transformations" do
       run do
-        QuickNav::Data.select :settings
+        QuickNav::Display.select :settings
 
         setup do
           item :settings, "/settings"
