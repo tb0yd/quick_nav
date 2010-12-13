@@ -1,7 +1,7 @@
 
 module QuickNav
   module Data
-    def self.init_all
+    def self.reset
       @@base = [] # the info for each item in the base nav
       @@parents = {} # hash to store the parent node of each item (if there is one)
     end
@@ -69,12 +69,6 @@ module QuickNav
     def self.select(item)
       raise "cannot select >1 item" if item.is_a?(Array)
       @@selected = item
-    end
-    
-    def self.reset
-      @@base = []
-      @@parents = {}
-      @@selected = nil
     end
     
     def self.url_to_codeword(url)

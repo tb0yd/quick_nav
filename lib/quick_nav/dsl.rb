@@ -4,7 +4,7 @@ module QuickNav
     # this method is complex so we can have the simple 'item x x' DSL.
     def setup(parent=nil)
       if parent.nil?   # reset base_nav only at beginning
-        Data.init_all
+        Data.reset
       end
 
       # use procs to retain access to parent variable and setup method and
