@@ -4,18 +4,6 @@ require File.join(File.dirname(__FILE__), '../spec_helper')
 describe QuickNav::DSL do
   include QuickNav
 
-  before(:each) do
-    @dsl = QuickNav::DSL.new(self)
-  end
-  
-  def run(&block)
-    def mock_translation_method(sym)
-      sym.to_s.humanize
-    end
-    @dsl.default_display_method = method(:mock_translation_method)
-    @dsl.instance_eval &block
-  end
-
   describe "#setup" do
     it "should understand the omitted option key :display" do
       QuickNav::Data.select(:item_1)

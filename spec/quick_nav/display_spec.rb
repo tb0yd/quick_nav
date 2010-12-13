@@ -2,11 +2,6 @@ require File.join(File.dirname(__FILE__), '../../lib/quick_nav/display')
 require File.join(File.dirname(__FILE__), '../spec_helper.rb')
 
 describe QuickNav::Display do
-
-  before(:each) do
-    @dsl = QuickNav::DSL.new(self)
-  end
-
   it "should load an erb template" do
     nav_html = <<-HTML_END
 <div class="menu_wrapper_bg">
