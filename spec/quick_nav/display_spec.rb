@@ -63,4 +63,12 @@ describe QuickNav::Display do
       QuickNav::Display.selected.should be_nil
     end
   end
+
+  describe "#default_translation_method" do
+    it "should allow the user to set" do
+      def y(s); "test123" end
+      QuickNav::Display.default_translation_method = method(:y)
+      QuickNav::Display.nav.include?("test123").should be_true
+    end
+  end
 end

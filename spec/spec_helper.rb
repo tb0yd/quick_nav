@@ -54,6 +54,6 @@ def run(&block)
     sym.to_s.humanize
   end
 
-  QuickNav::Display.default_method = method(:mock_translation_method)
+  QuickNav::Display.default_translation_method = method(:mock_translation_method)
   @dsl.instance_eval &block
 end

@@ -2,7 +2,7 @@ require 'erubis'
 
 module QuickNav
   module Display
-    def self.default_method=(method); @@default_method = method end
+    def self.default_translation_method=(method); @@default_translation_method = method end
 
     def self.load_template(template)
       @@template = Erubis::Eruby.new(template)
@@ -30,7 +30,7 @@ module QuickNav
       Data.get_row(parent).each do |item|
         code_name, url, opts = *item
         opts ||= {}
-        word_name = opts[:display] || @@default_method[code_name]
+        word_name = opts[:display] || @@default_translation_method[code_name]
         selected = Data.ancestors_for(@@selected).include?(code_name)
 
         yield code_name, word_name, url, selected
