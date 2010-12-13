@@ -50,10 +50,9 @@ describe QuickNav::Data do
     end
   end
   
-  describe "#get_all_selected" do
+  describe "#ancestors_for" do
     describe "given a symbol" do
       before(:each) do
-        QuickNav::Display.select :settings2a
         QuickNav::Data.push(:settings, "/settings")
         QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
         QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)
@@ -62,24 +61,23 @@ describe QuickNav::Data do
       end
       
       it "should return the selected node" do
-        QuickNav::Data.get_all_selected.include?(:settings2a).should == true
+        QuickNav::Data.ancestors_for(:settings2a).include?(:settings2a).should == true
       end
       
       it "should return all parents" do
-        QuickNav::Data.get_all_selected.include?(:settings2).should == true
-        QuickNav::Data.get_all_selected.include?(:settings).should == true
-        QuickNav::Data.get_all_selected.size.should == 3
+        QuickNav::Data.ancestors_for(:settings2a).include?(:settings2).should == true
+        QuickNav::Data.ancestors_for(:settings2a).include?(:settings).should == true
+        QuickNav::Data.ancestors_for(:settings2a).size.should == 3
       end
       
       it "should return them in order" do
-        QuickNav::Data.get_all_selected.first.should == :settings
-        QuickNav::Data.get_all_selected.last.should == :settings2a
+        QuickNav::Data.ancestors_for(:settings2a).first.should == :settings
+        QuickNav::Data.ancestors_for(:settings2a).last.should == :settings2a
       end
     end
     
     describe "given a url string" do
       before(:each) do
-        QuickNav::Display.select "/settings2a"
         QuickNav::Data.push(:settings, "/settings")
         QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
         QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)
@@ -88,24 +86,24 @@ describe QuickNav::Data do
       end
       
       it "should return the selected node" do
-        QuickNav::Data.get_all_selected.include?(:settings2a).should == true
+        QuickNav::Data.ancestors_for("/settings2a").include?(:settings2a).should == true
       end
       
       it "should return all parents" do
-        QuickNav::Data.get_all_selected.include?(:settings2).should == true
-        QuickNav::Data.get_all_selected.include?(:settings).should == true
-        QuickNav::Data.get_all_selected.size.should == 3
+        QuickNav::Data.ancestors_for("/settings2a").include?(:settings2).should == true
+        QuickNav::Data.ancestors_for("/settings2a").include?(:settings).should == true
+        QuickNav::Data.ancestors_for("/settings2a").size.should == 3
       end
       
       it "should return them in order" do
-        QuickNav::Data.get_all_selected.first.should == :settings
-        QuickNav::Data.get_all_selected.last.should == :settings2a
+        QuickNav::Data.ancestors_for("/settings2a").first.should == :settings
+        QuickNav::Data.ancestors_for("/settings2a").last.should == :settings2a
       end
     end
   end
   
   describe "#reset" do
-    it "should reset all class variables used" do
+    it "should reset all data" do
       QuickNav::Data.push(:settings, "/settings")
       QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
       QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)
@@ -114,7 +112,7 @@ describe QuickNav::Data do
       
       QuickNav::Data.reset
       
-      QuickNav::Data.get_all_selected.should be_empty
+      QuickNav::Data.ancestors_for("/settings2a").should be_empty
       QuickNav::Data.get_row.should be_empty
     end
   end

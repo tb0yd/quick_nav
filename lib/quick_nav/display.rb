@@ -17,7 +17,7 @@ module QuickNav
     end
 
     def self.sub_menus(&block)
-      Data.get_all_selected.each do |item|
+      Data.ancestors_for(@@selected).each do |item|
         unless Data.get_row(item).empty?
           yield item
         end
@@ -29,7 +29,7 @@ module QuickNav
         code_name, url, opts = *item
         opts ||= {}
         word_name = opts[:display] || @@default_method[code_name]
-        selected = Data.get_all_selected.include?(code_name)
+        selected = Data.ancestors_for(@@selected).include?(code_name)
 
         yield code_name, word_name, url, selected
       end
