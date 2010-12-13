@@ -6,7 +6,9 @@ SAMPLE_TEMPLATE = <<HTML_END
   <div class="menu_wrapper">
     <ul class="column span-48 menu main_menu">
       <% Data.get_row.each do |item| %>
-        <% sym_name, url, opts = *item %>
+        <% sym_name, url, opts = *item
+           opts ||= {}
+           name = opts[:display] || @@default_method[sym_name] %>
         <% if Data.get_all_selected.include?(sym_name) %>
           <li id="menu_nav_<%= sym_name %>" class="selected">
             <a class="selected" href="<%= url %>"><%= name %></a>
@@ -21,24 +23,28 @@ SAMPLE_TEMPLATE = <<HTML_END
   </div>
 </div>
 <% Data.get_all_selected.each do |selected| %>
-  <div class="sub_menu_wrapper_bg">
-    <div class="sub_menu_wrapper">
-      <ul class="menu sub_menu">
-        <% Data.get_row(selected).each do |item| %>
-          <% sym_name, url, opts = *item %>
-          <% if Data.get_all_selected.include?(sym_name) %>
-            <li id="menu_nav_<%= sym_name %>" class="selected">
-              <a class="selected" href="<%= url %>"><%= name %></a>
-            </li>
-          <% else %>
-            <li id="menu_nav_<%= sym_name %>">
-              <a href="<%= url %>"><%= name %></a>
-            </li>
+  <% unless Data.get_row(selected).empty? %>
+    <div class="sub_menu_wrapper_bg">
+      <div class="sub_menu_wrapper">
+        <ul class="menu sub_menu">
+          <% Data.get_row(selected).each do |item| %>
+            <% sym_name, url, opts = *item
+               opts ||= {}
+               name = opts[:display] || @@default_method[sym_name] %>
+            <% if Data.get_all_selected.include?(sym_name) %>
+              <li id="menu_nav_<%= sym_name %>" class="selected">
+                <a class="selected" href="<%= url %>"><%= name %></a>
+              </li>
+            <% else %>
+              <li id="menu_nav_<%= sym_name %>">
+                <a href="<%= url %>"><%= name %></a>
+              </li>
+            <% end %>
           <% end %>
-        <% end %>
-      </ul>
+        </ul>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 HTML_END
 
@@ -53,11 +59,26 @@ describe QuickNav::NewDisplay do
       sym.to_s.humanize
     end
 
-    @dsl.default_display_method = method(:mock_translation_method)
+    QuickNav::NewDisplay.default_method = method(:mock_translation_method)
     @dsl.instance_eval &block
   end
 
   it "should load an erb template" do
+    nav_html = <<-HTML_END
+<div class="menu_wrapper_bg">
+  <div class="menu_wrapper">
+    <ul class="column span-48 menu main_menu">
+      <li id="menu_nav_item_1" class="selected">
+        <a class="selected" href="/home">Item 1</a>
+      </li>
+      <li id="menu_nav_item_2">
+        <a href="/help">Item 2</a>
+      </li>
+    </ul>
+  </div>
+</div>
+HTML_END
+
     QuickNav::Data.select_before_setup(:item_1)
 
     run do
@@ -68,6 +89,7 @@ describe QuickNav::NewDisplay do
     end
 
     QuickNav::NewDisplay.load_template(SAMPLE_TEMPLATE)
-    QuickNav::NewDisplay.nav.should =~ /sub_menu/
+    QuickNav::NewDisplay.nav.split(/>\s+</).join("><").strip.should == 
+                    nav_html.split(/>\s+</).join("><").strip
   end
 end
