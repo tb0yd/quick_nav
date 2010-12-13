@@ -2,10 +2,6 @@ require 'quick_nav'
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe QuickNav do
-  before(:each) do
-    QuickNav::Display.load_template(SAMPLE_TEMPLATE)
-  end
-
   describe "#nav" do
     it "should make the selected item have the selected template" do
       nav_html = <<-HTML_END

@@ -29,8 +29,13 @@ HTML_END
     end
 
     it "should load an erb template" do
-      QuickNav::Display.load_template(SAMPLE_TEMPLATE)
       QuickNav::Display.nav.should roughly_match(NAV_HTML)
+    end
+  end
+
+  describe "#select" do
+    before(:each) do
+      QuickNav::Display.select(:item_1)
     end
 
     # the logic here is that the nav will only be rendered once per controller action.

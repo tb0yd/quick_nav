@@ -4,7 +4,10 @@ require 'active_support/inflector'
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  config.before(:all) { @dsl = QuickNav::DSL.new(self) }
+  config.before(:all) do
+    @dsl = QuickNav::DSL.new(self)
+    QuickNav::Display.load_template(SAMPLE_TEMPLATE)
+  end
 end
 
 SAMPLE_TEMPLATE = <<HTML_END
