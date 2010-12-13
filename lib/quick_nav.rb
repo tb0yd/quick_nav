@@ -21,20 +21,20 @@ module QuickNav
       end
       
       def current_navigation(item)
-        QuickNav::Data.select_before_setup(item)
+        QuickNav::Data.select(item)
       end
     end
 
     module ClassMethods
       def navigation(item)
-        QuickNav::Data.select_before_setup(item)
+        QuickNav::Data.select(item)
       end
     end
   end
 
   module Helpers
     def render_navigation(*args)
-      QuickNav::Data.select_before_setup(request.env['PATH_INFO']) if QuickNav::Data.get_selected.nil?
+      QuickNav::Data.select(request.env['PATH_INFO']) if QuickNav::Data.get_selected.nil?
 
       dsl = QuickNav::DSL.new(self)
       dsl.default_display_method = method(:t)

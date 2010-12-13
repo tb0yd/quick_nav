@@ -1,12 +1,12 @@
 require 'quick_nav'
 require 'rspec'
 require 'active_support/inflector'
+Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  
+  config.before(:all) { @dsl = QuickNav::DSL.new(self) }
 end
 
-  
 SAMPLE_TEMPLATE = <<HTML_END
 <div class="menu_wrapper_bg">
   <div class="menu_wrapper">
@@ -45,3 +45,12 @@ SAMPLE_TEMPLATE = <<HTML_END
     </div>
 <% end %>
 HTML_END
+
+def run(&block)
+  def mock_translation_method(sym)
+    sym.to_s.humanize
+  end
+
+  QuickNav::Display.default_method = method(:mock_translation_method)
+  @dsl.instance_eval &block
+end

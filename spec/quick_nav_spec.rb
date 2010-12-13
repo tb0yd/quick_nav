@@ -2,50 +2,11 @@ require 'quick_nav'
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe QuickNav do
-  
   before(:each) do
-    @dsl = QuickNav::DSL.new(self)
     QuickNav::Display.load_template(SAMPLE_TEMPLATE)
   end
 
-  def run(&block)
-    def mock_translation_method(sym)
-      sym.to_s.humanize
-    end
-
-    @dsl.default_display_method = method(:mock_translation_method)
-    @dsl.instance_eval &block
-  end
-
   describe "#nav" do
-    it "should generate nav html based on a hash it already knows" do
-      nav_html = <<-HTML_END
-<div class="menu_wrapper_bg">
-  <div class="menu_wrapper">
-    <ul class="column span-48 menu main_menu">
-      <li id="menu_nav_item_1" class="selected">
-        <a class="selected" href="/home">Item 1</a>
-      </li>
-      <li id="menu_nav_item_2">
-        <a href="/help">Item 2</a>
-      </li>
-    </ul>
-  </div>
-</div>
-HTML_END
-
-      QuickNav::Data.select_before_setup(:item_1)
-
-      run do
-        setup do
-          item :item_1, "/home"
-          item :item_2, "/help"
-        end
-      end
-
-      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
-    end
-
     it "should make the selected item have the selected template" do
       nav_html = <<-HTML_END
 <div class="menu_wrapper_bg">
@@ -62,7 +23,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select_before_setup(:item_2)
+      QuickNav::Data.select(:item_2)
 
       run do
         setup do
@@ -71,7 +32,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.should roughly_match(nav_html)
     end
 
     it "should allow you to select by URL" do
@@ -90,7 +51,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select_before_setup("/help")
+      QuickNav::Data.select("/help")
 
       run do
         setup do
@@ -99,7 +60,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.should roughly_match(nav_html)
     end
 
     it "should QuickNav::Display the items in the order they were written in" do
@@ -124,7 +85,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select_before_setup(:item_2)
+      QuickNav::Data.select(:item_2)
 
       run do
         setup do
@@ -135,7 +96,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.should roughly_match(nav_html)
     end
 
     it "should allow you to specify your own item QuickNav::Display name" do
@@ -160,7 +121,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select_before_setup(:item_2)
+      QuickNav::Data.select(:item_2)
 
       run do
         setup do
@@ -171,7 +132,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.should roughly_match(nav_html)
     end
 
     it "should render the parents of the selected node as selected" do
@@ -205,7 +166,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select_before_setup(:settings)
+      QuickNav::Data.select(:settings)
 
       run do
         setup do
@@ -218,7 +179,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.should roughly_match(nav_html)
     end
       
     it "should not render the children of the selected node as selected" do
@@ -252,7 +213,7 @@ HTML_END
 </div>
 HTML_END
 
-      QuickNav::Data.select_before_setup(:item_1)
+      QuickNav::Data.select(:item_1)
 
       run do
         setup do
@@ -270,13 +231,13 @@ HTML_END
       QuickNav::Data.get_all_selected.include?(:item_1).should be_true
       QuickNav::Data.get_all_selected.include?(:settings).should_not be_true
 
-      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.should roughly_match(nav_html)
     end
   end
 
   describe "#setup" do
     it "should behave as expected with realistic input" do
-      QuickNav::Data.select_before_setup :search_careers
+      QuickNav::Data.select :search_careers
 
       run do
         setup do
@@ -322,7 +283,7 @@ HTML_END
           end
         end
 
-        QuickNav::Data.select_before_setup :search_careers
+        QuickNav::Data.select :search_careers
 
         setup do
           item :careers, "/search_occupations" do
@@ -358,7 +319,7 @@ HTML_END
           rm :ed_advice
         end
 
-        QuickNav::Data.select_before_setup :search_careers
+        QuickNav::Data.select :search_careers
 
         setup do
           item :careers, "/search_occupations" do
@@ -387,7 +348,7 @@ HTML_END
           update :js_advice, "/js_resources", :display => "Advice"
         end
 
-        QuickNav::Data.select_before_setup :search_careers
+        QuickNav::Data.select :search_careers
 
         setup do
           item :careers, "/search_occupations" do
@@ -406,7 +367,7 @@ HTML_END
     
     it "should let you add a sub-menu in a transformation" do
       run do
-        QuickNav::Data.select_before_setup :settings
+        QuickNav::Data.select :settings
 
         setup do
           item :settings, "/settings"
@@ -428,7 +389,7 @@ HTML_END
 
     it "should let you manipulate submenus in transformations" do
       run do
-        QuickNav::Data.select_before_setup :settings
+        QuickNav::Data.select :settings
 
         setup do
           item :settings, "/settings"
@@ -458,7 +419,7 @@ HTML_END
 
     it "should allow multiple subnavs in transformations" do
       run do
-        QuickNav::Data.select_before_setup :settings
+        QuickNav::Data.select :settings
 
         setup do
           item :settings, "/settings"

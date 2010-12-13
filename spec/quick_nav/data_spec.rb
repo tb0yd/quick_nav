@@ -19,7 +19,7 @@ describe QuickNav::Data do
     end
     
     it "should allow you to choose where to put it in the list" do
-      QuickNav::Data.select_before_setup :settings
+      QuickNav::Data.select :settings
       QuickNav::Data.push(:settings, "/settings")
       QuickNav::Data.push(:help, "/help")
       QuickNav::Data.push(:logout, "/logout", :after => :settings)
@@ -30,7 +30,7 @@ describe QuickNav::Data do
 
   describe "#update" do
     it "should not reset the options if you don't provide any" do
-      QuickNav::Data.select_before_setup :settings
+      QuickNav::Data.select :settings
       QuickNav::Data.push(:settings, "/settings", :display => "Test")
       QuickNav::Data.update(:settings)
       QuickNav::Data.get_row[0][1].should == "/settings"
@@ -52,7 +52,7 @@ describe QuickNav::Data do
   
   describe "#get_selected" do
     it "should return the selected node info that was provided" do
-      QuickNav::Data.select_before_setup :settings2a
+      QuickNav::Data.select :settings2a
       QuickNav::Data.get_selected.should == :settings2a
     end
   end
@@ -60,7 +60,7 @@ describe QuickNav::Data do
   describe "#get_all_selected" do
     describe "given a symbol" do
       before(:each) do
-        QuickNav::Data.select_before_setup :settings2a
+        QuickNav::Data.select :settings2a
         QuickNav::Data.push(:settings, "/settings")
         QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
         QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)
@@ -86,7 +86,7 @@ describe QuickNav::Data do
     
     describe "given a url string" do
       before(:each) do
-        QuickNav::Data.select_before_setup "/settings2a"
+        QuickNav::Data.select "/settings2a"
         QuickNav::Data.push(:settings, "/settings")
         QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
         QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)
@@ -113,7 +113,7 @@ describe QuickNav::Data do
   
   describe "#reset" do
     it "should reset all class variables used" do
-      QuickNav::Data.select_before_setup "/settings2a"
+      QuickNav::Data.select "/settings2a"
       QuickNav::Data.push(:settings, "/settings")
       QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
       QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)

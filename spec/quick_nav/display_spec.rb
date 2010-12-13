@@ -7,15 +7,6 @@ describe QuickNav::Display do
     @dsl = QuickNav::DSL.new(self)
   end
 
-  def run(&block)
-    def mock_translation_method(sym)
-      sym.to_s.humanize
-    end
-
-    QuickNav::Display.default_method = method(:mock_translation_method)
-    @dsl.instance_eval &block
-  end
-
   it "should load an erb template" do
     nav_html = <<-HTML_END
 <div class="menu_wrapper_bg">
@@ -32,7 +23,7 @@ describe QuickNav::Display do
 </div>
 HTML_END
 
-    QuickNav::Data.select_before_setup(:item_1)
+    QuickNav::Data.select(:item_1)
 
     run do
       setup do
@@ -42,7 +33,6 @@ HTML_END
     end
 
     QuickNav::Display.load_template(SAMPLE_TEMPLATE)
-    QuickNav::Display.nav.split(/>\s+</).join("><").strip.should ==
-                    nav_html.split(/>\s+</).join("><").strip
+    QuickNav::Display.nav.should roughly_match(nav_html)
   end
 end

@@ -70,7 +70,7 @@ module QuickNav
     end
 
     # called from the controller
-    def self.select_before_setup(item)
+    def self.select(item)
       raise "cannot select >1 item" if item.is_a?(Array)
       @@selected = item
     end
