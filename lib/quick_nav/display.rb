@@ -1,48 +1,38 @@
+require 'erubis'
+
 module QuickNav
   module Display
     def self.default_method=(method); @@default_method = method end
-    
+
+    def self.load_template(template)
+      @@template = Erubis::Eruby.new(template)
+    end
+
     def self.nav
-      # do the primary nav
-      result = line(
-        '<div class="menu_wrapper_bg"><div class="menu_wrapper"><ul class="column span-48 menu main_menu">',
-        Data.get_row,
-        '</ul></div></div>')
-
-      # do the sub navs
-      Data.get_all_selected.each do |selected|
-        result += line(
-          '<div class="sub_menu_wrapper_bg"><div class="sub_menu_wrapper"><ul class="menu sub_menu">',
-          Data.get_row(selected),
-          '</ul></div></div>')
-      end
-
-      result
+      @@template.result(binding())
     end
 
-    def self.line(tstart, items, tend)
-      if items[0]
-        result = tstart
-        items.each do |item|
-          result += item(item)
+    def self.main_menu(&block)
+      each_row_in(nil, &block) # top level means parent is nil
+    end
+
+    def self.sub_menus(&block)
+      Data.get_all_selected.each do |item|
+        unless Data.get_row(item).empty?
+          yield item
         end
-        result + tend
-      else
-        ""
       end
     end
 
-    def self.item(item)
-      sym_name, url, opts = *item
-      opts ||= {}
-      name = opts[:display] || @@default_method[sym_name]
+    def self.each_row_in(parent=nil, &block)
+      Data.get_row(parent).each do |item|
+        code_name, url, opts = *item
+        opts ||= {}
+        word_name = opts[:display] || @@default_method[code_name]
+        selected = Data.get_all_selected.include?(code_name)
 
-      if Data.get_all_selected.include?(sym_name)
-        %(<li id="menu_nav_#{sym_name}" class="selected"><a class="selected" href="#{url}">#{name}</a></li>)
-      else
-        %(<li id="menu_nav_#{sym_name}"><a href="#{url}">#{name}</a></li>)
+        yield code_name, word_name, url, selected
       end
     end
-
   end
 end

@@ -1,9 +1,11 @@
 require 'quick_nav'
+require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe QuickNav do
   
   before(:each) do
     @dsl = QuickNav::DSL.new(self)
+    QuickNav::Display.load_template(SAMPLE_TEMPLATE)
   end
 
   def run(&block)
@@ -41,7 +43,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
     end
 
     it "should make the selected item have the selected template" do
@@ -69,7 +71,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
     end
 
     it "should allow you to select by URL" do
@@ -97,7 +99,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
     end
 
     it "should QuickNav::Display the items in the order they were written in" do
@@ -133,7 +135,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
     end
 
     it "should allow you to specify your own item QuickNav::Display name" do
@@ -169,7 +171,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
     end
 
     it "should render the parents of the selected node as selected" do
@@ -216,7 +218,7 @@ HTML_END
         end
       end
 
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
     end
       
     it "should not render the children of the selected node as selected" do
@@ -268,7 +270,7 @@ HTML_END
       QuickNav::Data.get_all_selected.include?(:item_1).should be_true
       QuickNav::Data.get_all_selected.include?(:settings).should_not be_true
 
-      QuickNav::Display.nav.should == nav_html.split(/>\s+</).join("><").strip
+      QuickNav::Display.nav.split(/>\s+</).join("><").strip.should == nav_html.split(/>\s+</).join("><").strip
     end
   end
 
