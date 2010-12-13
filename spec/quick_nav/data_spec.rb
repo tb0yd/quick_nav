@@ -19,7 +19,7 @@ describe QuickNav::Data do
     end
     
     it "should allow you to choose where to put it in the list" do
-      QuickNav::Data.select :settings
+      QuickNav::Display.select :settings
       QuickNav::Data.push(:settings, "/settings")
       QuickNav::Data.push(:help, "/help")
       QuickNav::Data.push(:logout, "/logout", :after => :settings)
@@ -30,7 +30,7 @@ describe QuickNav::Data do
 
   describe "#update" do
     it "should not reset the options if you don't provide any" do
-      QuickNav::Data.select :settings
+      QuickNav::Display.select :settings
       QuickNav::Data.push(:settings, "/settings", :display => "Test")
       QuickNav::Data.update(:settings)
       QuickNav::Data.get_row[0][1].should == "/settings"
@@ -79,7 +79,7 @@ describe QuickNav::Data do
     
     describe "given a url string" do
       before(:each) do
-        QuickNav::Data.select "/settings2a"
+        QuickNav::Display.select "/settings2a"
         QuickNav::Data.push(:settings, "/settings")
         QuickNav::Data.push(:settings1, "/settings1", :parent => :settings)
         QuickNav::Data.push(:settings2, "/settings2", :parent => :settings)

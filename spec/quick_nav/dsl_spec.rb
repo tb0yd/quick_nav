@@ -6,7 +6,7 @@ describe QuickNav::DSL do
 
   describe "#setup" do
     it "should understand the omitted option key :display" do
-      QuickNav::Data.select(:item_1)
+      QuickNav::Display.select(:item_1)
 
       run do
         setup do

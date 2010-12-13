@@ -64,12 +64,6 @@ module QuickNav
         items
       end
     end
-
-    # called from the controller
-    def self.select(item)
-      raise "cannot select >1 item" if item.is_a?(Array)
-      @@selected = item
-    end
     
     def self.url_to_codeword(url)
       @@base.select { |item| item[1] == url }.first[0]
