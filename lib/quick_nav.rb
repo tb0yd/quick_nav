@@ -16,34 +16,34 @@ module QuickNav
       def self.included(base) #:nodoc:
         base.class_eval do
           include QuickNav::Helpers
-          base.helper_method :render_navigation
+          base.helper_method :quick_nav
         end
       end
       
-      def current_navigation(item)
-        QuickNav::Data.select(item)
+      def quick_nav(item)
+        QuickNav::Display.select(item)
       end
     end
 
     module ClassMethods
-      def navigation(item)
-        QuickNav::Data.select(item)
+      def quick_nav(item)
+        QuickNav::Display.select(item)
       end
     end
   end
 
   module Helpers
-    def render_navigation(*args)
-      QuickNav::Data.select(request.env['PATH_INFO']) if QuickNav::Data.get_selected.nil?
+    def quick_nav(*args)
+      QuickNav::Display.select(request.env['PATH_INFO']) if QuickNav::Display.selected.nil?
+      QuickNav::Display.default_translation_method = method(:t)
+      QuickNav::Display.load_template(IO.read(File.join(RAILS_ROOT, "app", "views", "layouts", "quick_nav.html.erb")))
 
       dsl = QuickNav::DSL.new(self)
-      dsl.default_display_method = method(:t)
-      dsl.instance_eval(IO.read(File.join(RAILS_ROOT, "config", "navigation.rb")))
+      dsl.instance_eval(IO.read(File.join(RAILS_ROOT, "config", "quick_nav.rb")))
       
       Transformations.go!
-      result = Display.nav
-      QuickNav::Data.reset
-      result
+      
+      QuickNav::Display.nav
     end
   end
 end

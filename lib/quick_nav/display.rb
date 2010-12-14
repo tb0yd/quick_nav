@@ -40,6 +40,6 @@ module QuickNav
     def self.select(code_name)
       @@selected = code_name
     end
-    def self.selected; @@selected end
+    def self.selected; defined?(@@selected) ? @@selected : nil end
   end
 end
