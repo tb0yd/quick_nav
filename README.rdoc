@@ -2,7 +2,60 @@
 
 This project is designed to provide a fast HTML nav generator for Rails. The strategy I am using in the project is to avoid looping and creating objects.
 
-The project has not reached a release quality state yet. If you want to include it or fork it, look in the specs for guidance on how to write navigation.rb.
+=== Installation
+
+In your Gemfile:
+
+  gem "quick_nav"
+
+Add a config/quick_nav.rb file with a description of your menu. The syntax for this file is straight-forward. You can organize your menu into subnavs and add custom display names for your nav items. Here's a sample quick_nav.rb (the full file):
+
+  setup do
+    item :account, "/account" do
+      item :email, "/email", :display => "Email Settings"
+      item :password, "/password", :display =>  "Change Password"
+    end
+    item :forums, forums_path
+    item :blog, blog_path
+    item :sitemap, sitemap_path
+    item :contact, contact_path
+    item :search, search_path
+  end
+
+You should also add an ERB template for your nav bar in app/views/layouts/quick_nav.html.erb. You can use the built-in methods "main_menu", "sub_menus", and "each_row_in" to control the flow. Here's an example nav template:
+
+  <div>
+    <ul>
+      <% main_menu do |code_name, word_name, url, selected| %>
+        <% if selected %>
+          <li id="menu_nav_<%= code_name %>" class="selected">
+            <a class="selected" href="<%= url %>"><%= word_name %></a>
+          </li>
+        <% else %>
+          <li id="menu_nav_<%= code_name %>">
+            <a href="<%= url %>"><%= word_name %></a>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <% sub_menus do |item| %>
+      <div>
+        <ul>
+          <% each_row_in item do |code_name, word_name, url, selected| %>
+            <% if selected %>
+              <li id="menu_nav_<%= code_name %>" class="selected">
+                <a class="selected" href="<%= url %>"><%= word_name %></a>
+              </li>
+            <% else %>
+              <li id="menu_nav_<%= code_name %>">
+                <a href="<%= url %>"><%= word_name %></a>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+  <% end %>
 
 == Acknowledgement
 
